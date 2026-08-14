@@ -749,150 +749,82 @@ html, body {
 .envelope-card.open .wax-seal { opacity: 0; transform: scale(0); }
 .envelope-card.open .letter-content { opacity: 1; transform: translateY(0); }
 
-/* ================= 📱 MOBILE RESPONSIVE (สำหรับหน้าจอมือถือ) ================= */
+/* ================= 📱 จัดหน้าจอมือถือให้เป็นธรรมชาติ ================= */
 @media (max-width: 600px) {
-    
-    /* ---------------- 1. หน้า HOME ---------------- */
+
+    /* 🌸 1. หน้าแรก (Home) */
     #home-page {
-        padding: 15px 10px !important;
+        height: auto !important;
+        min-height: 100vh;
+        overflow-y: auto !important; /* ให้เลื่อนจอลงมาดูการ์ดข้างล่างได้ */
+        padding: 40px 15px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
         justify-content: flex-start !important;
-        box-sizing: border-box !important;
     }
 
-    /* โลโก้หัวข้อ To-Do Tray ด้านบนไม่ให้โดนตัดขอบ */
-    #home-page h1, 
-    #home-page .main-title,
-    #home-page .logo-title {
-        font-size: 32px !important;
-        margin-top: 10px !important;
-        margin-bottom: 2px !important;
+    /* ห้ามตัดคำชื่อเว็บ To-Do Tray ให้ยาวสวยงามในแถวเดียว */
+    #home-page h1,
+    .main-title,
+    .logo-title {
+        white-space: nowrap !important;
+        font-size: 38px !important;
+        margin: 10px 0 !important;
     }
 
-    #home-page p,
-    #home-page .subtitle {
-        font-size: 12px !important;
-        margin-bottom: 8px !important;
-    }
-
-    /* ปุ่ม View Streak Log */
-    .home-streak-btn {
-        margin: 5px 0 12px 0 !important;
-        padding: 6px 14px !important;
-        font-size: 12px !important;
-    }
-
-    /* การ์ดธีม ให้เป็นตาราง 2 คอลัมน์ ไม่ล้นจอ */
-    #home-page > div:not(.home-streak-btn):not(.top-nav),
+    /* การ์ดธีมเรียงเป็นแนวตั้ง 1 แถวตามปกติแบบสบายตา */
     .theme-selection-grid, 
     .theme-container, 
     .themes-wrapper {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 8px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
         width: 100% !important;
-        max-width: 340px !important;
-        margin: 0 auto !important;
+        max-width: 320px !important;
+        margin-top: 15px !important;
     }
 
-    /* สไตล์การ์ดแต่ละใบ */
-    .theme-card,
-    #home-page div[onclick*="selectTheme"],
-    #home-page div[onclick*="start"] {
-        padding: 10px 6px !important;
-        min-height: 85px !important;
-        border-radius: 14px !important;
+    .theme-card {
+        width: 100% !important;
+        min-height: 90px !important;
     }
 
-    .theme-card h3 {
-        font-size: 12px !important;
-        margin: 3px 0 !important;
-    }
 
-    .theme-card p {
-        font-size: 9px !important;
-        line-height: 1.15 !important;
-    }
-
-    /* ---------------- 2. หน้า SCRAPBOOK PLANNER ---------------- */
+    /* 📖 2. หน้าไดอารี่ (Scrapbook) */
     #scrapbook-page {
-        padding: 10px 8px !important;
-        justify-content: flex-start !important;
-        box-sizing: border-box !important;
-        overflow: hidden !important; /* ป้องกันหน้าจอเลื่อนหลุด */
+        height: auto !important;
+        min-height: 100vh;
+        overflow-y: auto !important; /* เลื่อนดูถาดแสตมป์ด้านล่างได้ ไม่โดนบีบ */
+        padding: 20px 10px 40px 10px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
     }
 
+    /* กระดาษไดอารี่ ขนาดปกติสวยงาม ไม่ย่อส่วน */
+    .planner-paper {
+        width: 95% !important;
+        max-width: 350px !important;
+        height: 520px !important; /* ความสูงมาตรฐานแบบในคอม */
+        transform: none !important; /* เอาการย่อส่วนออก */
+        margin: 15px auto !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* แถบปุ่มด้านบน */
     .top-nav {
-        width: 100% !important;
-        max-width: 340px !important;
+        width: 95% !important;
+        max-width: 350px !important;
         display: flex !important;
         justify-content: space-between !important;
-        margin-bottom: 6px !important;
     }
 
-    .top-nav .nav-btn {
-        padding: 4px 10px !important;
-        font-size: 11px !important;
-    }
-
-    /* ขนาดกระดาษ Planner พอดีหน้าจอ */
-    .planner-paper {
-        width: 100% !important;
-        max-width: 330px !important;
-        height: 48vh !important;
-        min-height: 300px !important;
-        margin: 0 auto 8px auto !important;
-        box-sizing: border-box !important;
-    }
-
-    /* จัดการหัวกระดาษ ไม่ให้ August Log ทับกับข้อความในตาราง */
-    .planner-header {
-        padding: 4px 8px !important;
-        margin-bottom: 4px !important;
-    }
-
-    .planner-header h1, 
-    #planner-month-title {
-        font-size: 22px !important;
-        line-height: 1 !important;
-    }
-
-    .date-tag {
-        font-size: 10px !important;
-    }
-
-    /* ---------------- 3. ถาดแสตมป์ ---------------- */
+    /* ถาดแสตมป์ด้านล่าง วางต่อจากกระดาษแบบสบายๆ */
     .stamp-palette {
-        width: 100% !important;
-        max-width: 330px !important;
-        padding: 6px 8px !important;
-        gap: 4px !important;
-        margin: 0 auto !important;
-        box-sizing: border-box !important;
-    }
-
-    .palette-label {
-        font-size: 10px !important;
-        margin-bottom: 2px !important;
-    }
-
-    .stamp-list {
-        gap: 4px !important;
-        justify-content: center !important;
-    }
-
-    .stamp-btn {
-        padding: 3px 5px !important;
-        font-size: 13px !important;
-    }
-
-    .stamp-btn.text-stamp-btn {
-        font-size: 8px !important;
-        padding: 2px 4px !important;
-    }
-
-    .clear-stamps-btn {
-        font-size: 8px !important;
-        padding: 2px 5px !important;
-        margin-top: 2px !important;
+        width: 95% !important;
+        max-width: 350px !important;
+        margin-top: 10px !important;
+        flex-shrink: 0 !important;
     }
 }

@@ -110,6 +110,36 @@ html, body {
     margin: 0 0 20px 0;
 }
 
+/* 📅 ปุ่มเปิด Streak ปฏิทินในหน้า Home */
+.home-streak-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #5d4037;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1.5px dashed #bcaaa4;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transition: all 0.25s ease;
+    backdrop-filter: blur(5px);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.home-streak-btn:hover {
+    transform: scale(1.05) translateY(-2px);
+    background: #ffffff;
+    box-shadow: 0 6px 16px rgba(141, 110, 99, 0.2);
+    border-color: #8d6e63;
+}
+
+.home-streak-btn:active {
+    transform: scale(0.95);
+}
+
 /* แผงเรียงการ์ดธีมแนวนอนตรงกลาง */
 .theme-grid, .theme-list, .theme-options {
     display: flex !important;

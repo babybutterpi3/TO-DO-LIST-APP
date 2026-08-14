@@ -40,8 +40,10 @@ docRef.onSnapshot((doc) => {
         if (cloudData.streakDays) {
             checkedDays = cloudData.streakDays;
             localStorage.setItem("myStreakDays", JSON.stringify(checkedDays));
-            if (document.getElementById("streak-modal")?.style.display === "flex") {
-                renderCalendar(); // รีเฟรชปฏิทินถ้าเปิดอยู่
+            
+            // 🌟 เพิ่มบรรทัดนี้: บังคับอัปเดตปฏิทินทันทีที่มีข้อมูลมาถึง!
+            if (typeof renderCalendar === "function") {
+                renderCalendar();
             }
         }
         
@@ -50,7 +52,7 @@ docRef.onSnapshot((doc) => {
             scrapbookHistory = cloudData.scrapbookHistory;
             localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
             if (currentViewingDay && document.getElementById("scrapbook-page")?.classList.contains("active")) {
-                renderScrapbookPage(currentViewingDay); // รีเฟรชหน้าสมุดถ้าเปิดอยู่
+                renderScrapbookPage(currentViewingDay);
             }
         }
     }

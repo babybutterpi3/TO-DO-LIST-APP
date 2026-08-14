@@ -142,14 +142,19 @@ function addTodo() {
             envelope.style.transform = "translate(-50%, -50%) scale(1)";
         }
         
-        markTodayComplete(); // ☁️ ซิงค์ Streak
+       // 1. บันทึกเช็กอิน Streak & ส่ง Cloud
+        markTodayComplete();
 
+        // 2. รวบรวม To-Do ทั้งหมด
         let todayTasks = [];
         allPriceTags.forEach(tag => {
-            if (tag.innerText && tag.innerText !== "") todayTasks.push(tag.innerText);
+            if (tag.innerText && tag.innerText !== "") {
+                todayTasks.push(tag.innerText);
+            }
         });
 
-        saveScrapbookData(todayTasks, text); // ☁️ ซิงค์ To-Do ลง Scrapbook
+        // 3. บันทึกลง Scrapbook History & ซิงค์ขึ้น Cloud
+        saveScrapbookData(todayTasks, text);
 
         isRewardMode = false;
         currentIndex = 0;
@@ -252,6 +257,7 @@ function closeStreakModal() {
 function renderCalendar() {
     let grid = document.getElementById("calendar-grid");
     if (!grid) return;
+    
     grid.innerHTML = "";
     
     let now = new Date();
@@ -259,42 +265,66 @@ function renderCalendar() {
                       "July", "August", "September", "October", "November", "December"];
     
     let monthHeader = document.getElementById("calendar-month");
-    if (monthHeader) monthHeader.innerText = "🌸 " + monthNames[now.getMonth()] + " " + now.getFullYear() + " 🌸";
+    if (monthHeader) {
+        monthHeader.innerText = "🌸 " + monthNames[now.getMonth()] + " " + now.getFullYear() + " 🌸";
+    }
 
     let totalDays = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
 
     for (let i = 1; i <= totalDays; i++) {
         let dayBox = document.createElement("div");
         dayBox.classList.add("day-box");
-        dayBox.onclick = function() { openScrapbookForDay(i); };
+        
+        dayBox.onclick = function() {
+            openScrapbookForDay(i);
+        };
         dayBox.style.cursor = "pointer";
         
-        // แปลงเช็กทั้งแบบตัวเลข เพื่อความแม่นยำ
-        if (checkedDays.map(d => Number(d)).includes(i)) {
+        // 🌟 ตรวจสอบทั้งแบบตัวเลขและข้อความ
+        let isChecked = checkedDays.some(d => Number(d) === i);
+
+        if (isChecked) {
             dayBox.classList.add("checked");
             dayBox.innerText = "✨"; 
         } else {
             dayBox.innerText = i;
         }
+        
         grid.appendChild(dayBox);
     }
 
+    // 🌟 อัปเดตตัวเลข Streak ทุกจุด
+    let currentStreakCount = checkedDays.length;
+    
     let streakNum = document.getElementById("streak-num");
-    if (streakNum) streakNum.innerText = checkedDays.length;
+    if (streakNum) streakNum.innerText = currentStreakCount;
 
-    let completedText = document.querySelector(".streak-count, .streak-modal p, #streak-modal span");
-    if (completedText && completedText.innerText.includes("Completed")) {
-        completedText.innerHTML = `🔥 Completed: ${checkedDays.length} Days`;
-    }
+    let streakDisplays = document.querySelectorAll(".streak-count, #streak-modal p, #streak-modal span");
+    streakDisplays.forEach(el => {
+        if (el && el.innerText.includes("Completed")) {
+            el.innerHTML = `🔥 Completed: ${currentStreakCount} Days`;
+        }
+    });
 }
 
 function markTodayComplete() {
     let today = new Date().getDate();
     if (!checkedDays.includes(today)) {
         checkedDays.push(today);
-        localStorage.setItem("myStreakDays", JSON.stringify(checkedDays));
-        syncToCloud({ streakDays: checkedDays }); // ☁️ ซิงค์ขึ้น Cloud
     }
+    // บันทึกลงเครื่อง
+    localStorage.setItem("myStreakDays", JSON.stringify(checkedDays));
+    
+    // ☁️ ส่ง streakDays ขึ้น Firebase ทันที!
+    syncToCloud({
+        streakDays: checkedDays
+    });
+    
+    // สั่งวาดปฏิทินใหม่ทันที
+    if (typeof renderCalendar === "function") {
+        renderCalendar();
+    }
+}
 }
 
 

@@ -1,29 +1,74 @@
+// ================= 🔥 1. เชื่อมต่อ FIREBASE CLOUD =================
+const firebaseConfig = {
+    apiKey: "AIzaSyBfirq37geauaCQ8SDDJVralEf8T9PQ3bM",
+    authDomain: "todo-tray-app.firebaseapp.com",
+    projectId: "todo-tray-app",
+    storageBucket: "todo-tray-app.firebasestorage.app",
+    messagingSenderId: "1054819710064",
+    appId: "1:1054819710064:web:9166837281c8c69601b0b5",
+    measurementId: "G-B9BB0H2PJY"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const docRef = db.collection("userData").doc("mainUser");
+
+// ☁️ ฟังก์ชันส่งข้อมูลขึ้น Cloud
+function syncToCloud(dataObj) {
+    docRef.set(dataObj, { merge: true })
+        .then(() => console.log("☁️ Synced to Firebase!"))
+        .catch(err => console.error("Firebase Sync Error:", err));
+}
+
+// ================= 📂 2. ตัวแปรตั้งต้น & รับข้อมูล REAL-TIME =================
 let currentTheme = 'breakfast';
 let currentIndex = 0;
 let isRewardMode = false;
+let selectedStamp = null;
+let currentViewingDay = null; 
 
-// 🗓️ 1. โหลดข้อมูลประวัติ Streak & Scrapbook
+// โหลดข้อมูลจากเครื่องก่อน (เผื่อเน็ตหลุด)
 let checkedDays = JSON.parse(localStorage.getItem("myStreakDays")) || [];
 let scrapbookHistory = JSON.parse(localStorage.getItem("myScrapbookHistory")) || {};
 
-// 🏠 2. ฟังก์ชันเลือกธีม
+// 🔄 รับข้อมูล Real-time จาก Cloud (เปิดคอมหรือมือถือ ค่าจะเปลี่ยนตามทันที)
+docRef.onSnapshot((doc) => {
+    if (doc.exists) {
+        const cloudData = doc.data();
+        
+        // 1. อัปเดต Streak
+        if (cloudData.streakDays) {
+            checkedDays = cloudData.streakDays;
+            localStorage.setItem("myStreakDays", JSON.stringify(checkedDays));
+            if (document.getElementById("streak-modal")?.style.display === "flex") {
+                renderCalendar(); // รีเฟรชปฏิทินถ้าเปิดอยู่
+            }
+        }
+        
+        // 2. อัปเดต Scrapbook & Stamps
+        if (cloudData.scrapbookHistory) {
+            scrapbookHistory = cloudData.scrapbookHistory;
+            localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
+            if (currentViewingDay && document.getElementById("scrapbook-page")?.classList.contains("active")) {
+                renderScrapbookPage(currentViewingDay); // รีเฟรชหน้าสมุดถ้าเปิดอยู่
+            }
+        }
+    }
+});
+
+
+// ================= 🏠 3. ระบบนำทาง & ฟังก์ชันทั่วไป =================
 function selectTheme(themeName) {
     currentTheme = themeName;
-    
     document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");
         screen.style.display = "none";
     });
-    
     setTimeout(() => {
         let targetScreen;
-        if (themeName === 'breakfast') {
-            targetScreen = document.getElementById("tray-page");
-        } else if (themeName === 'fruits') {
-            targetScreen = document.getElementById("fruits-page");
-        } else if (themeName === 'picnic') {
-            targetScreen = document.getElementById("picnic-page");
-        }
+        if (themeName === 'breakfast') targetScreen = document.getElementById("tray-page");
+        else if (themeName === 'fruits') targetScreen = document.getElementById("fruits-page");
+        else if (themeName === 'picnic') targetScreen = document.getElementById("picnic-page");
         
         if (targetScreen) {
             targetScreen.classList.add("active");
@@ -33,7 +78,6 @@ function selectTheme(themeName) {
     }, 100);
 }
 
-// 🔙 3. ย้อนกลับหน้า Home
 function goToHome() {
     document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");
@@ -48,7 +92,7 @@ function goToHome() {
     }, 100);
 }
 
-// ✍️ 4. ฟังก์ชันเพิ่ม To-Do & Seal It
+// ================= ✍️ 4. ระบบ TO-DO & SEAL IT =================
 function addTodo() {
     let activeScreen = document.querySelector(".screen.active");
     if (!activeScreen) return;
@@ -66,31 +110,24 @@ function addTodo() {
     if (!isRewardMode) {
         if (currentIndex < allPriceTags.length) {
             allPriceTags[currentIndex].innerText = text;
-            
             let currentFood = allFoods[currentIndex];
             if (currentFood) {
                 currentFood.style.display = "flex";
                 currentFood.style.opacity = "1";
                 currentFood.style.transform = "scale(1)";
             }
-
             currentIndex++;
         }
         
         if (currentIndex >= allFoods.length) {
             isRewardMode = true;
-            if (currentTheme === 'breakfast') {
-                input.placeholder = "tell yourself a sweet reward... 🥐";
-            } else if (currentTheme === 'fruits') {
-                input.placeholder = "manifest your daily wins bestie... 🔮";
-            } else if (currentTheme === 'picnic') {
-                input.placeholder = "whisper a secret reward for today... 🤫";
-            }
+            if (currentTheme === 'breakfast') input.placeholder = "tell yourself a sweet reward... 🥐";
+            else if (currentTheme === 'fruits') input.placeholder = "manifest your daily wins bestie... 🔮";
+            else if (currentTheme === 'picnic') input.placeholder = "whisper a secret reward for today... 🤫";
             
             btn.innerText = "seal it! 💌";
             btn.style.background = "linear-gradient(135deg, #a1887f, #5d4037)";
         }
-        
     } else {
         // 🌟 โหมดกด Seal It!
         let rewardDisplay = activeScreen.querySelector(".reward-text");
@@ -103,19 +140,14 @@ function addTodo() {
             envelope.style.transform = "translate(-50%, -50%) scale(1)";
         }
         
-        // 1. บันทึกเช็กอิน Streak
-        markTodayComplete();
+        markTodayComplete(); // ☁️ ซิงค์ Streak
 
-        // 2. รวบรวม To-Do ทั้งหมด
         let todayTasks = [];
         allPriceTags.forEach(tag => {
-            if (tag.innerText && tag.innerText !== "") {
-                todayTasks.push(tag.innerText);
-            }
+            if (tag.innerText && tag.innerText !== "") todayTasks.push(tag.innerText);
         });
 
-        // 3. บันทึกลง Scrapbook History
-        saveScrapbookData(todayTasks, text);
+        saveScrapbookData(todayTasks, text); // ☁️ ซิงค์ To-Do ลง Scrapbook
 
         isRewardMode = false;
         currentIndex = 0;
@@ -126,15 +158,12 @@ function addTodo() {
             btn.style.background = "linear-gradient(135deg, #ffb74d, #f57c00)";
         }
     }
-
     input.value = "";
 }
 
-// 💌 5. ฟังก์ชันกดเปิดจดหมาย
 function openEnvelope() {
     let activeScreen = document.querySelector(".screen.active");
     if (!activeScreen) return;
-
     let envelope = activeScreen.querySelector(".envelope-card");
     if (!envelope) return;
     
@@ -144,14 +173,10 @@ function openEnvelope() {
         envelope.style.transition = "all 0.5s ease";
         envelope.style.opacity = "0";
         envelope.style.transform = "translate(-50%, -50%) scale(0.5)";
-        
-        setTimeout(() => {
-            envelope.style.display = "none";
-        }, 500);
+        setTimeout(() => { envelope.style.display = "none"; }, 500);
     }
 }
 
-// 🔄 6. ตั้งค่าถาดเริ่มต้น
 function resetTray() {
     let activeScreen = document.querySelector(".screen.active");
     if (!activeScreen) return;
@@ -173,10 +198,8 @@ function resetTray() {
 
     currentIndex = 0;
     isRewardMode = false;
-    
     let input = activeScreen.querySelector("input[type='text']");
     let btn = activeScreen.querySelector(".cute-btn");
-    
     let navBtn = activeScreen.querySelector(".nav-btn");
     if (navBtn) navBtn.innerText = "🏠 Themes";
 
@@ -195,12 +218,9 @@ function resetTray() {
     }
 }
 
-// ⌨️ 7. ดักจับปุ่มกด Enter และการแตะอาหาร
 document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("keypress", function(e) {
-        if (e.key === "Enter") {
-            addTodo();
-        }
+        if (e.key === "Enter") addTodo();
     });
 
     document.addEventListener("click", function(e) {
@@ -214,13 +234,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// 🗓️ 8. ระบบ Streak Modal & Calendar
+
+// ================= 🗓️ 5. ระบบ STREAK =================
 function openStreakModal() {
     renderCalendar();
     let modal = document.getElementById("streak-modal");
-    if (modal) {
-        modal.style.display = "flex";
-    }
+    if (modal) modal.style.display = "flex";
 }
 
 function closeStreakModal() {
@@ -231,7 +250,6 @@ function closeStreakModal() {
 function renderCalendar() {
     let grid = document.getElementById("calendar-grid");
     if (!grid) return;
-    
     grid.innerHTML = "";
     
     let now = new Date();
@@ -239,19 +257,14 @@ function renderCalendar() {
                       "July", "August", "September", "October", "November", "December"];
     
     let monthHeader = document.getElementById("calendar-month");
-    if (monthHeader) {
-        monthHeader.innerText = "🌸 " + monthNames[now.getMonth()] + " " + now.getFullYear() + " 🌸";
-    }
+    if (monthHeader) monthHeader.innerText = "🌸 " + monthNames[now.getMonth()] + " " + now.getFullYear() + " 🌸";
 
     let totalDays = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
 
     for (let i = 1; i <= totalDays; i++) {
         let dayBox = document.createElement("div");
         dayBox.classList.add("day-box");
-        
-        dayBox.onclick = function() {
-            openScrapbookForDay(i);
-        };
+        dayBox.onclick = function() { openScrapbookForDay(i); };
         dayBox.style.cursor = "pointer";
         
         if (checkedDays.includes(i)) {
@@ -260,11 +273,9 @@ function renderCalendar() {
         } else {
             dayBox.innerText = i;
         }
-        
         grid.appendChild(dayBox);
     }
 
-    // อัปเดตตัวเลข Streak
     let streakNum = document.getElementById("streak-num");
     if (streakNum) streakNum.innerText = checkedDays.length;
 
@@ -279,23 +290,32 @@ function markTodayComplete() {
     if (!checkedDays.includes(today)) {
         checkedDays.push(today);
         localStorage.setItem("myStreakDays", JSON.stringify(checkedDays));
+        syncToCloud({ streakDays: checkedDays }); // ☁️ ซิงค์ขึ้น Cloud
     }
 }
 
-// 📖 9. บันทึกและแสดงผล Scrapbook Planner
+
+// ================= 📖 6. ระบบ SCRAPBOOK & STAMPS =================
 function saveScrapbookData(tasks, reward) {
     let todayKey = new Date().getDate();
+    
+    // ดึงแสตมป์เก่ามาด้วย จะได้ไม่โดนทับหายไป
+    let existingStamps = scrapbookHistory[todayKey] && scrapbookHistory[todayKey].stamps ? scrapbookHistory[todayKey].stamps : [];
+    
     scrapbookHistory[todayKey] = {
         tasks: tasks,
-        reward: reward
+        reward: reward,
+        stamps: existingStamps
     };
     localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
+    syncToCloud({ scrapbookHistory: scrapbookHistory }); // ☁️ ซิงค์ขึ้น Cloud
 }
 
 function renderScrapbookPage(dayNum) {
+    currentViewingDay = dayNum; // บันทึกว่าเปิดวันไหนอยู่
+    
     let now = new Date();
-    let monthNames = ["January", "February", "March", "April", "May", "June", 
-                      "July", "August", "September", "October", "November", "December"];
+    let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
     let monthTitle = document.getElementById("planner-month-title");
     let dateNum = document.getElementById("planner-date-num");
@@ -303,20 +323,20 @@ function renderScrapbookPage(dayNum) {
     if (monthTitle) monthTitle.innerText = monthNames[now.getMonth()] + " Log";
     if (dateNum) dateNum.innerText = dayNum + "/" + (now.getMonth() + 1);
 
+    // ล้างกระดาษ (ลบ To-Do และ แสตมป์เก่าทิ้งก่อนวาดใหม่)
     let body = document.getElementById("planner-body");
-    if (!body) return;
-    
-    body.innerHTML = "";
+    if (body) body.innerHTML = "";
+    document.querySelectorAll(".stamped-item").forEach(item => item.remove());
 
     let data = scrapbookHistory[dayNum];
     
-    if (data && data.tasks) {
+    // 1. วาด To-Do (Tape Tags)
+    if (data && data.tasks && data.tasks.length > 0) {
         let topPositions = [5, 23, 42, 60]; 
         
         data.tasks.forEach((taskText, index) => {
             let sticker = document.createElement("div");
             sticker.classList.add("scrapbook-sticker");
-            
             let randomRotate = (Math.random() * 10 - 5).toFixed(1);
             let randomLeft = Math.floor(Math.random() * 20) + 28; 
             let topPos = topPositions[index] || (18 * index);
@@ -331,7 +351,6 @@ function renderScrapbookPage(dayNum) {
         if (data.reward) {
             let rewardSticker = document.createElement("div");
             rewardSticker.classList.add("scrapbook-sticker");
-            
             let rewardRotate = (Math.random() * 8 - 4).toFixed(1);
             let rewardLeft = Math.floor(Math.random() * 20) + 30;
 
@@ -341,15 +360,19 @@ function renderScrapbookPage(dayNum) {
             rewardSticker.innerHTML = '<div class="tape-tag reward-tag">💌 ' + data.reward + '</div>';
             body.appendChild(rewardSticker);
         }
-
     } else {
-        body.innerHTML = '<div style="text-align:center; padding-top:50%; color:#a1887f; font-size:12px; line-height:1.5;">today\'s side-quests<br> haven\'t started yet! 🍃</div>';
+        if (body) body.innerHTML = '<div style="text-align:center; padding-top:50%; color:#a1887f; font-size:12px; line-height:1.5;">today\'s side-quests<br> haven\'t started yet! 🍃</div>';
+    }
+
+    // 2. วาดแสตมป์ที่เคยปั๊มไว้
+    if (data && data.stamps && Array.isArray(data.stamps)) {
+        data.stamps.forEach(s => drawSingleStamp(s));
     }
 }
 
 function openScrapbookForDay(dayNum) {
     closeStreakModal();
-    document.querySelectorAll(".screen").forEach(function(s) {
+    document.querySelectorAll(".screen").forEach(s => {
         s.classList.remove("active");
         s.style.display = "none"; 
     });
@@ -362,39 +385,22 @@ function openScrapbookForDay(dayNum) {
     }
 }
 
-// ================= 🎨 STAMP SYSTEM =================
-let selectedStamp = null;
-let currentViewingDay = null; // เก็บว่าตอนนี้เปิด Scrapbook ของวันที่เท่าไหร่
-
-// 1. เลือกแสตมป์
 function selectStamp(stampContent, btnElement) {
     selectedStamp = stampContent;
-    console.log("เลือกแสตมป์แล้ว:", selectedStamp);
-    
     document.querySelectorAll(".stamp-btn").forEach(b => b.classList.remove("active"));
-    if (btnElement) {
-        btnElement.classList.add("active");
-    }
+    if (btnElement) btnElement.classList.add("active");
 }
 
-// 2. ปั๊มลงกระดาษ
-// 🌟 ฟังก์ชันปั๊มแสตมป์ (จะทำงานเฉพาะตอนที่เปิดหน้า Scrapbook อยู่เท่านั้น!)
 function stampOnPaper(event) {
     let scrapbookScreen = document.getElementById("scrapbook-page");
-    
-    // ถ้าไม่ได้เปิดหน้า Scrapbook อยู่ หรือหน้าโดนซ่อนอยู่ ไม่ต้องทำอะไรเลย
-    if (!scrapbookScreen || !scrapbookScreen.classList.contains("active")) {
-        return;
-    }
+    if (!scrapbookScreen || !scrapbookScreen.classList.contains("active")) return;
 
     if (!selectedStamp) {
         alert("กรุณาเลือกแสตมป์จากถาดด้านล่างก่อนน้า ✨");
         return;
     }
 
-    if (!currentViewingDay) {
-        currentViewingDay = new Date().getDate();
-    }
+    if (!currentViewingDay) currentViewingDay = new Date().getDate();
 
     let paper = document.getElementById("planner-paper");
     if (!paper) return;
@@ -434,13 +440,15 @@ function stampOnPaper(event) {
 
     scrapbookHistory[currentViewingDay].stamps.push(stampData);
     localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
+    
+    syncToCloud({ scrapbookHistory: scrapbookHistory }); // ☁️ ซิงค์ขึ้น Cloud ทันที
 
     drawSingleStamp(stampData);
 }
 
-// 3. ฟังก์ชันวาดแสตมป์เดี่ยวๆ
 function drawSingleStamp(stampData) {
     let paper = document.getElementById("planner-paper");
+    if (!paper) return;
     let el = document.createElement("div");
     el.classList.add("stamped-item");
     if (stampData.isText) el.classList.add("text-stamp");
@@ -453,33 +461,13 @@ function drawSingleStamp(stampData) {
     paper.appendChild(el);
 }
 
-// 4. ล้างแสตมป์ทั้งหมดของวันที่กำลังเปิด
 function clearDayStamps() {
     if (!currentViewingDay || !scrapbookHistory[currentViewingDay]) return;
     
     scrapbookHistory[currentViewingDay].stamps = [];
     localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
     
-    // ลบ element แสตมป์ออกจากหน้า
+    syncToCloud({ scrapbookHistory: scrapbookHistory }); // ☁️ ลบใน Cloud ด้วย
+
     document.querySelectorAll(".stamped-item").forEach(item => item.remove());
 }
-
-// 🌟 อัปเดตฟังก์ชัน renderScrapbookPage เดิม เพื่อให้วาดแสตมป์เก่าที่เคยปั๊มไว้ด้วย
-let originalRenderScrapbookPage = renderScrapbookPage;
-renderScrapbookPage = function(dayNum) {
-    currentViewingDay = dayNum; // จำว่าเปิดวันไหน
-    
-    // ลบแสตมป์เก่าบนหน้าจอออกก่อน
-    document.querySelectorAll(".stamped-item").forEach(item => item.remove());
-
-    // เรียกฟังก์ชันวาดข้อความเดิม
-    if (typeof originalRenderScrapbookPage === "function") {
-        originalRenderScrapbookPage(dayNum);
-    }
-
-    // วาดแสตมป์ที่เคยปั๊มไว้ของวันนี้
-    let data = scrapbookHistory[dayNum];
-    if (data && data.stamps && Array.isArray(data.stamps)) {
-        data.stamps.forEach(s => drawSingleStamp(s));
-    }
-};

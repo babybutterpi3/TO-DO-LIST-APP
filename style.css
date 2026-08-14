@@ -841,30 +841,41 @@ html, body {
     }
 
 
-    /* 📖 2. หน้าไดอารี่ Scrapbook */
+/* 📖 หน้าไดอารี่ Scrapbook สำหรับมือถือ */
     #scrapbook-page {
         height: 100vh !important;
-        padding: 10px 10px !important;
+        overflow-y: auto !important; /* ให้เลื่อนจอได้ */
+        padding: 10px 0 30px 0 !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 0px !important;
+    }
+
+    /* 1. ปุ่มด้านบน */
+    .top-nav {
+        width: 320px !important;
+        margin-bottom: 5px !important;
+        display: flex !important;
         justify-content: space-between !important;
-        box-sizing: border-box !important;
     }
 
+    /* 2. ตัวกระดาษ: ล็อกขนาดต้นฉบับไว้ แล้วสั่ง zoom/scale ย่อลงมาทั้งแผ่น */
     .planner-paper {
-        width: 100% !important;
-        max-width: 330px !important;
-        height: 58vh !important;
-        margin: 0 auto !important;
-        box-sizing: border-box !important;
+        width: 340px !important;        /* ล็อกความกว้างต้นฉบับ */
+        height: 520px !important;       /* ล็อกความสูงต้นฉบับ เส้นตารางจะไม่ย่น */
+        transform: scale(0.78) !important; /* สั่งย่อขนาดลง 22% ให้พอดีจอมือถือ */
+        transform-origin: top center !important; /* ย่อโดยยึดจุดกึ่งกลางด้านบน */
+        margin: 0 auto -90px auto !important; /* ดึงพื้นที่ว่างด้านล่างที่เกิดจากการย่อกลับขึ้นมา */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important;
     }
 
+    /* 3. ถาดแสตมป์ด้านล่าง */
     .stamp-palette {
-        width: 100% !important;
+        width: 90% !important;
         max-width: 330px !important;
-        padding: 6px 8px !important;
-        margin: 0 auto !important;
-        box-sizing: border-box !important;
+        padding: 8px 10px !important;
+        border-radius: 16px !important;
+        z-index: 10 !important;
     }
-}

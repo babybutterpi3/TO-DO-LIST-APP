@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">    <title>My To-Do Tray</title>
+    <link rel="stylesheet" href="style.css">
+<!-- บอกให้ Safari ยืดหน้าเว็บเต็มพื้นที่จอภาพรวมถึงแถบStatus Bar -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+<!-- กำหนดสีแถบสถานะบนสุดบน Safari -->
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+
+    <div class="phone-screen">
+        
+        <!-- ==========================================
+             🏠 1. หน้า HOME (หน้าเลือกธีมก่อนเข้าแอป)
+             ========================================== -->
+        <div id="home-page" class="screen active">
+            <div class="welcome-header">
+                <h2>🍽️ To-Do Tray</h2>
+                <p>Pick your today theme</p>
+            </div>
+
+            <!-- เมนูการ์ดเลือกธีม -->
+            <div class="theme-list">
+                <!-- 1. ธีม Breakfast -->
+                <div class="theme-card" onclick="selectTheme('breakfast')">
+                    <div class="theme-icon">🍳</div>
+                    <div class="theme-info">
+                        <h3>Breakfast Set(4)</h3>
+                        <p>Toast, Lemonade, Strawberry, Greek Yogurt</p>
+                    </div>
+                </div>
+
+                <!-- 🍎 2. ธีม Fresh Fruits -->
+                <div class="theme-card" onclick="selectTheme('fruits')">
+                    <div class="theme-icon">🍎</div>
+                    <div class="theme-info">
+                        <h3>Fresh Fruits Set(5)</h3>
+                        <p>Banana, Grape, Apple, Mango, Pear</p>
+                    </div>
+                </div>
+
+                <!-- 🧺 3. ธีม Picnic Basket Set -->
+                <div class="theme-card" onclick="selectTheme('picnic')">
+                    <div class="theme-icon">🧺</div>
+                    <div class="theme-info">
+                        <h3>Picnic Basket Set(5)</h3>
+                        <p>Tea, Cookies, Cherries, Fruit Juice, Camera </p>
+                    </div>
+                </div>
+
+                <div class="theme-card disabled">
+                    <div class="theme-icon">🍔</div>
+                    <div class="theme-info">
+                        <h3>Fast Food Set(3)</h3>
+                        <p>Burger, Coke, French Fries (Soon)</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- ==========================================
+             🍱 2. หน้า TRAY (หน้าถาดอาหาร Breakfast)
+             ========================================== -->
+        <div id="tray-page" class="screen">
+            
+            <!-- ปุ่มกดกลับหน้า Home -->
+                <div class="top-nav">
+                    <button onclick="goToHome()" class="nav-btn">🏠 Themes</button>
+                    <button onclick="openStreakModal()" class="nav-btn streak-btn">🗓️ Streak</button>
+                </div>
+
+            <!-- กล่องถาดไม้ -->
+            <div class="tray-container">
+                <!-- 1. รูปถาดไม้ -->
+                <img src="bf-tray.png" class="tray-img" alt="Tray">
+
+                <!-- ✉️ 2. ซองจดหมายรางวัล -->
+                <div class="envelope-card" id="envelope" onclick="openEnvelope()">
+                    <div class="envelope-flap"></div>
+                    <div class="wax-seal" id="seal">💌</div>
+                    <div class="letter-content" id="letter">
+                        <div class="reward-title">✨ Reward For Today ✨</div>
+                        <div class="reward-text" id="reward-display">
+                            🥠 "เก่งมาก! วันนี้เคลียร์ Task หมดแล้ว!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🍳 อาหาร 4 ชิ้น -->
+                <div class="food-item item-toast">
+                    <div class="price-tag">🍳 ตื่น 7 โมงเช้า</div>
+                    <img src="bf-toast.png" class="food-img">
+                </div>
+
+                <div class="food-item item-lemonade">
+                    <div class="price-tag">🍋 ดื่มน้ำ 1 แก้ว</div>
+                    <img src="bf-lemonade.png" class="food-img">
+                </div>
+
+                <div class="food-item item-strawberry">
+                    <div class="price-tag">🍓 ออกกำลังกาย</div>
+                    <img src="bf-strawberries.png" class="food-img">
+                </div>
+
+                <div class="food-item item-yogurt">
+                    <div class="price-tag">🫐 กินโยเกิร์ต</div>
+                    <img src="bf-greekyg.png" class="food-img">
+                </div>
+            </div> <!-- ปิด tray-container -->
+
+            <!-- แผงพิมพ์ด้านล่างของ Breakfast -->
+            <div class="bottom-bar">
+                <input type="text" class="cute-input" placeholder="✨ what are you like to do today?">
+                <button onclick="addTodo()" class="cute-btn">add 🍳</button>
+            </div>
+
+        </div> <!-- ปิด tray-page -->
+
+
+        <!-- ==========================================
+             🍎 3. หน้า FRUITS TRAY (หน้าถาดผลไม้ 5 ชิ้น)
+             ========================================== -->
+        <div id="fruits-page" class="screen">
+            
+            <!-- ปุ่มกลับหน้า Home -->
+            <div class="top-nav">
+                <button class="nav-btn" onclick="goToHome()">🏠 Themes</button>
+                <button class="nav-btn streak-btn" onclick="openStreakModal()">🗓️ Streak</button>
+            </div>
+
+            <!-- ถาดแพ็กผลไม้ -->
+            <div class="tray-container">
+                <!-- รูปพื้นหลังถาดผลไม้ -->
+                <img src="fruits-pack.png" class="tray-img fruits-tray-img"" alt="Fruits Pack">
+
+                <!-- ซองจดหมายก้นถาด -->
+                <div class="envelope-card envelope-fruits" id="envelope-fruits" onclick="openEnvelope()">
+                    <div class="wax-seal">💌</div>
+                    <div class="letter-content">
+                        <div class="reward-title">✨ Reward For Today ✨</div>
+                        <div class="reward-text" id="reward-display-fruits">
+                            🥠 "เก่งมาก! วันนี้เคลียร์ Task หมดแล้ว!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ผลไม้ 5 ชิ้น -->
+                <div class="food-item item-banana">
+                    <div class="price-tag">🍌 กล้วยหอม</div>
+                    <img src="banana.png" class="food-img">
+                </div>
+
+                <div class="food-item item-grape">
+                    <div class="price-tag">🍇 องุ่น</div>
+                    <img src="grape.png" class="food-img">
+                </div>
+
+                <div class="food-item item-apple">
+                    <div class="price-tag">🍎 แอปเปิล</div>
+                    <img src="apple.png" class="food-img">
+                </div>
+
+                <div class="food-item item-mango">
+                    <div class="price-tag">🥭 มะม่วง</div>
+                    <img src="mango.png" class="food-img">
+                </div>
+
+                <div class="food-item item-pear">
+                    <div class="price-tag">🍐 ลูกแพร์</div>
+                    <img src="pear.png" class="food-img">
+                </div>
+            </div> <!-- ปิด tray-container -->
+
+            <!-- แผงพิมพ์ด้านล่างของ Fruits -->
+            <div class="bottom-bar">
+                <input type="text" class="cute-input" placeholder="✨ what are you like to do today?">
+                <button onclick="addTodo()" class="cute-btn">add 🍎</button>
+            </div>
+
+        </div> <!-- ปิด fruits-page -->
+        
+        <!-- ==========================================
+     🧺 4. หน้า PICNIC TRAY (หน้าตะกร้าปิคนิค 5 ชิ้น)
+     ========================================== -->
+        <div id="picnic-page" class="screen">
+    
+        <!-- ปุ่มกลับหน้า Home -->
+        <div class="top-nav">
+            <button class="nav-btn" onclick="goToHome()">🏠 Themes</button>
+            <button class="nav-btn streak-btn" onclick="openStreakModal()">🗓️ Streak</button>
+        </div>
+
+        <!-- ตะกร้าปิคนิค -->
+        <div class="tray-container">
+            <!-- รูปตะกร้าปิคนิค -->
+            <img src="pn-basket.png" class="tray-img picnic-basket-img" alt="Picnic Basket">
+
+            <!-- ซองจดหมายก้นถาด -->
+            <div class="envelope-card" id="envelope-picnic" onclick="openEnvelope()">
+                <div class="wax-seal">💌</div>
+                <div class="letter-content">
+                    <div class="reward-title">✨ Reward For Today ✨</div>
+                    <div class="reward-text" id="reward-display-picnic">
+                        🥠 "เก่งมาก! วันนี้เคลียร์ Task หมดแล้ว!"
+                    </div>
+                </div>
+            </div>
+
+            <!-- ไอเทมปิคนิค 5 ชิ้น -->
+            <div class="food-item item-pn-tea">
+                <div class="price-tag">☕ จิบชาร้อน</div>
+                <img src="pn-tea.png" class="food-img">
+            </div>
+
+            <div class="food-item item-pn-cookies">
+                <div class="price-tag">🍪 กินคุกกี้</div>
+                <img src="pn-cookies.png" class="food-img">
+            </div>
+
+            <div class="food-item item-pn-camera">
+                <div class="price-tag">📷 ถ่ายรูปเล่น</div>
+                <img src="pn-camera.png" class="food-img">
+            </div>
+
+            <div class="food-item item-pn-cherry">
+                <div class="price-tag">🍒 ทานเชอร์รี่</div>
+                <img src="pn-cherry.png" class="food-img">
+            </div>
+
+            <div class="food-item item-pn-drink">
+                <div class="price-tag">🍹 ดื่มน้ำพีชโซดา</div>
+                <img src="pn-drink.png" class="food-img">
+            </div>
+        </div> <!-- ปิด tray-container -->
+
+        <!-- แผงพิมพ์ก้นจอ -->
+        <div class="bottom-bar">
+            <input type="text" class="cute-input" placeholder="✨ what are you like to do today?">
+            <button onclick="addTodo()" class="cute-btn"> add 🧺</button>
+        </div>
+
+        </div> <!-- ปิด picnic-page -->
+
+    </div> <!-- ปิด phone-screen -->
+
+    <script src="script.js"></script>
+
+<!-- 🗓️ Modal ปฏิทินเช็กอิน -->
+<div id="streak-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeStreakModal()">✕</button>
+        <h3>✨ Daily Streak Log ✨</h3>
+        <h4 id="calendar-month" class="month-title">🌸 August 2026 🌸</h4>
+        <p class="streak-subtitle">✨ Little Wins & Fairy Dust ✨</p>
+        
+        <!-- 🌟 ต้องมีบรรทัดนี้เพื่อเป็นพื้นที่วาดตารางปฏิทินน้า! -->
+        <div class="calendar-grid" id="calendar-grid"></div>
+        
+        <div class="streak-count">
+            🔥 Completed: <span id="streak-num">0</span> Days
+        </div>
+    </div>
+</div>
+
+    <!-- 📖 หน้า Scrapbook Daily Planner -->
+<div id="scrapbook-page" class="screen">
+    <!-- ปุ่มควบคุมด้านบน -->
+    <div class="top-nav">
+        <button onclick="goToHome()" class="nav-btn">🏠 Themes</button>
+        <button onclick="openStreakModal()" class="nav-btn streak-btn">🗓️ Streak</button>
+    </div>
+
+    <!-- แผ่นกระดาษ Planner -->
+    <div class="planner-paper">
+        <!-- ส่วนหัวแสดงชื่อเดือนฟอนต์ตวัด + วันที่ -->
+        <div class="planner-header">
+            <h1 id="planner-month-title" class="script-title">August Log</h1>
+            <div class="date-tag">Date ( <span id="planner-date-num">13/8</span> )</div>
+        </div>
+
+        <!-- พื้นที่วาง To-Do แบบสะเปะสะปะ -->
+        <div class="planner-body" id="planner-body">
+            <!-- รายการ To-Do + ป้ายสก็อตเทปเหลืองจะโดนสร้างด้วย JS ตรงนี้ -->
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

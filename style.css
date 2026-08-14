@@ -1,0 +1,589 @@
+/* ==================================================
+   ✒️ 0. FONT DECLARATION (ฟอนต์ Amoresa)
+   ================================================== */
+@font-face {
+    font-family: 'Amoresa';
+    src: url('Amoresa/Amoresa-Regular.woff2') format('woff2'),
+         url('Amoresa/Amoresa-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* ==================================================
+   📱 1. GLOBAL & BACKGROUND (โครงสร้างหลัก + รูปพื้นหลัง)
+   ================================================== */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Kanit', sans-serif;
+    
+    /* 🌟 แก้ชื่อไฟล์เป็น .jpeg ตรงตามไฟล์จริงแล้วครับ */
+    background-image: url('bg-main.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+/* ล็อกจอมือถือ */
+.phone-screen {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* สวิตช์ซ่อน/โชว์หน้า */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none !important;
+    opacity: 0;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.screen.active {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    z-index: 10;
+}
+
+
+/* ==================================================
+   🏠 2. HOME SCREEN & GLASS CARDS (หน้าแรก + การ์ดกระจกฝ้าตรงกลาง)
+   ================================================== */
+#home-screen, #home-page {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+}
+
+.home-container, .welcome-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: 1000px !important;
+    text-align: center !important;
+}
+
+/* ข้อความหัวข้อสว่างสดใส มีเงารองรับ */
+.home-container h1, .app-title, .welcome-header h2 {
+    font-family: 'Amoresa', cursive;
+    font-size: 42px !important;
+    color: #ffffff !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important;
+    margin: 0 0 6px 0;
+}
+
+.home-container p, .app-subtitle, .welcome-header p {
+    color: #f5f5f5 !important;
+    font-size: 14px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7) !important;
+    margin: 0 0 20px 0;
+}
+
+/* แผงเรียงการ์ดธีมแนวนอนตรงกลาง */
+.theme-grid, .theme-list, .theme-options {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 20px !important;
+    width: 100% !important;
+    max-width: 900px !important;
+    margin-top: 10px !important;
+}
+
+/* ตัวการ์ดกระจกฝ้า Glassmorphic */
+.theme-card {
+    background: rgba(255, 255, 255, 0.45) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    border-radius: 24px !important;
+    padding: 20px;
+    width: 190px !important;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.theme-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    background: rgba(255, 255, 255, 0.65) !important;
+}
+
+.theme-card:active {
+    transform: scale(0.96);
+}
+
+.theme-card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.theme-icon, .theme-img {
+    font-size: 28px;
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.theme-card h3, .theme-info h3 {
+    margin: 5px 0 3px 0;
+    font-size: 16px !important;
+    color: #2b1b17 !important;
+    font-weight: 600 !important;
+}
+
+.theme-card p, .theme-info p {
+    margin: 0;
+    font-size: 12px !important;
+    color: #4a3b32 !important;
+}
+
+
+/* ==================================================
+   🖼️ 3. THEME BACKGROUNDS (รูปพื้นหลังย่อยของแต่ละธีม)
+   ================================================== */
+#tray-page, #fruits-page, #picnic-page {
+    position: relative;
+    background: transparent;
+}
+
+#tray-page::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('bg-breakfast.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    z-index: 0;
+}
+
+#fruits-page::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('bg-fruits.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    z-index: 0;
+}
+
+#picnic-page::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('picnic-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.85;
+    z-index: 0;
+}
+
+
+/* ==================================================
+   🍱 4. TRAY & ITEMS (ถาดอาหารและพิกัดของแต่ละธีม)
+   ================================================== */
+.tray-container {
+    position: relative;
+    width: 75%;
+    max-width: 300px;
+    margin: auto 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tray-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+#fruits-page .tray-container {
+    width: 95% !important;
+    max-width: 400px !important;
+}
+
+.fruits-tray-img {
+    width: 100% !important;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
+}
+
+#picnic-page .tray-container {
+    margin-top: 250px !important;
+}
+
+.food-item {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+.food-img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(2px 5px 6px rgba(0,0,0,0.25));
+}
+
+.price-tag {
+    background: #fff;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #4a3728;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 3px;
+    white-space: nowrap;
+}
+
+/* 📌 พิกัดอาหาร: Breakfast */
+.item-toast      { top: 8%; left: 6%; width: 48%; }
+.item-lemonade   { top: 10%; right: 2%; width: 48%; }
+.item-strawberry { bottom: 15%; left: 6%; width: 46%; }
+.item-yogurt     { bottom: 12%; right: 2%; width: 44%; }
+
+/* 📌 พิกัดผลไม้: Fresh Fruits */
+.item-banana { top: 6%; left: 8%; width: 44%; }
+.item-grape  { top: 10%; right: 8%; width: 40%; }
+.item-apple  { top: 36%; left: 10%; width: 36%; }
+.item-mango  { top: 38%; right: 12%; width: 35%; }
+.item-pear   { bottom: 10%; left: 22%; width: 46%; }
+
+/* 📌 พิกัดไอเทม: Picnic Basket */
+.item-pn-tea     { top: 5%; left: 8%; width: 38%; }
+.item-pn-camera  { top: 2%; right: 8%; width: 42%; }
+.item-pn-cookies { top: 22%; right: 10%; width: 44%; }
+.item-pn-cherry  { bottom: 15%; left: 5%; width: 50%; }
+.item-pn-drink   { bottom: 5%; right: 15%; width: 34%; }
+
+
+/* ==================================================
+   📍 5. BOTTOM BAR & BUTTONS (แผงพิมพ์ & ปุ่มกด)
+   ================================================== */
+.top-nav {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 100;
+}
+
+.bottom-bar {
+    position: absolute;
+    bottom: calc(75px + env(safe-area-inset-bottom)); 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    max-width: 380px;
+    background: rgba(255, 253, 245, 0.95);
+    backdrop-filter: blur(8px);
+    border: 2px solid #fff;
+    border-radius: 30px;
+    padding: 6px 8px 6px 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    z-index: 100;
+}
+
+.cute-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px !important;
+    color: #4a3728;
+    width: 65%;
+    transform: scale(0.85);
+    transform-origin: left center;
+}
+
+.cute-input::placeholder { color: #bcaaa4; }
+
+.cute-btn, .nav-btn {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    color: #4a3b32 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 6px 14px;
+}
+
+.cute-btn:active { transform: scale(0.92); }
+.cute-btn:hover, .nav-btn:hover {
+    background: rgba(255, 255, 255, 0.85) !important;
+    transform: translateY(-2px);
+}
+
+
+/* ==================================================
+   📖 6. SCRAPBOOK DAILY PLANNER (หน้าแพลนเนอร์กระดาษ)
+   ================================================== */
+#scrapbook-page {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0; left: 0;
+    background: #f4ece1;
+    justify-content: center;
+    align-items: center;
+    z-index: 500;
+}
+
+#scrapbook-page.active { display: flex !important; }
+
+.planner-paper {
+    position: relative;
+    width: 90%;
+    max-width: 360px;
+    height: 85vh;
+    background-image: url('bg.diary.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 15px;
+    box-sizing: border-box;
+}
+
+.planner-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: none !important;
+    padding-top: 50px;
+    padding-bottom: 5px;
+}
+
+#planner-month-title, .script-title {
+    font-family: 'Amoresa', cursive !important;
+    font-size: 38px !important;
+    font-weight: normal !important;
+    color: #2b2b2b;
+    margin: 0;
+    line-height: 1.1;
+    -webkit-font-smoothing: antialiased;
+}
+
+.date-tag {
+    font-family: 'Kanit', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+.planner-body {
+    position: relative;
+    flex-grow: 1;
+    margin: 10px 0;
+}
+
+.scrapbook-sticker {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.tape-tag {
+    background: #ffe082;
+    color: #4a3728;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    box-shadow: 2px 3px 6px rgba(0,0,0,0.1);
+    white-space: nowrap;
+}
+
+.tape-tag.reward-tag {
+    background: #ffe0b2;
+    border: 1px dashed #d84315;
+    color: #4e342e;
+}
+
+
+/* ==================================================
+   📅 7. CALENDAR MODAL (ปฏิทิน Streak)
+   ================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fffdf0;
+    width: 85%;
+    max-width: 320px;
+    border-radius: 24px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    border: 2px solid #fff;
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px; right: 15px;
+    background: none; border: none;
+    font-size: 16px; color: #8d6e63;
+    cursor: pointer;
+}
+
+.modal-content h3 { margin: 0 0 4px 0; color: #4a3728; font-size: 16px; }
+.streak-subtitle { margin: 0 0 15px 0; color: #8d6e63; font-size: 11px; }
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 15px;
+}
+
+.day-box {
+    aspect-ratio: 1;
+    background: #f4eae1;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: #a1887f;
+}
+
+.day-box.checked {
+    background: #ffe082;
+    color: #4a3728;
+    box-shadow: 0 2px 6px rgba(255, 179, 0, 0.3);
+}
+
+.streak-count {
+    font-size: 13px;
+    font-weight: bold;
+    color: #d84315;
+    background: #fbe9e7;
+    padding: 6px 12px;
+    border-radius: 12px;
+    display: inline-block;
+}
+
+.month-title {
+    margin: 6px 0 2px 0;
+    font-size: 14px;
+    color: #8d6e63;
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   💌 8. ENVELOPE CARD (ซองจดหมาย)
+   ================================================== */
+.envelope-card {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%; height: 120px;
+    background: #f4eae1;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer; overflow: hidden;
+    transition: all 0.5s ease;
+    z-index: 1;
+}
+
+.wax-seal {
+    position: absolute;
+    width: 42px; height: 42px;
+    background: #902c2c;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 18px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 3;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+.letter-content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+    text-align: center;
+    padding: 10px;
+}
+
+.reward-title { font-size: 10px; color: #8d6e63; font-weight: bold; margin-bottom: 4px; }
+.reward-text { font-size: 12px; color: #3e2723; font-weight: bold; line-height: 1.4; }
+
+.envelope-card.open { height: 160px; background: #fffdf0; }
+.envelope-card.open .wax-seal { opacity: 0; transform: scale(0); }
+.envelope-card.open .letter-content { opacity: 1; transform: translateY(0); }

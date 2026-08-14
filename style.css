@@ -762,10 +762,10 @@ html, body {
     pointer-events: none !important;
 }
 
-/* ================= 📱 MOBILE RESPONSIVE (MERGED) ================= */
+   /* ================= 📱 MOBILE RESPONSIVE (ฉบับเหมือนในคอม 100%) ================= */
 @media (max-width: 600px) {
 
-    /* ---------------- 🏡 1. หน้าแรก (Home Page: รวม 4 กล่องพอดีจอ) ---------------- */
+    /* 🏡 1. หน้าแรก (Home) */
     #home-page {
         height: 100vh !important;
         max-height: 100vh !important;
@@ -779,31 +779,24 @@ html, body {
         gap: 5px !important;
     }
 
-    #home-page h1,
-    .main-title,
-    .logo-title {
+    #home-page h1, .main-title, .logo-title {
         font-size: 28px !important;
         margin: 0 !important;
         white-space: nowrap !important;
     }
 
-    #home-page p,
-    .subtitle {
+    #home-page p, .subtitle {
         font-size: 11px !important;
         margin: 2px 0 6px 0 !important;
     }
 
-    .home-streak-btn,
-    .streak-btn {
+    .home-streak-btn, .streak-btn {
         padding: 5px 12px !important;
         font-size: 11px !important;
         margin-bottom: 8px !important;
     }
 
-    /* กล่อง Grid 2x2 ขนาดกะทัดรัด */
-    .theme-selection-grid, 
-    .theme-container, 
-    .themes-wrapper {
+    .theme-selection-grid, .theme-container, .themes-wrapper {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
         grid-template-rows: 1fr 1fr !important;
@@ -813,28 +806,14 @@ html, body {
         margin: 0 auto !important;
     }
 
-    /* การ์ดแต่ละใบ */
     .theme-card {
         padding: 8px 6px !important;
         min-height: 75px !important;
         max-height: 90px !important;
         border-radius: 12px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
     }
 
-    .theme-card span,
-    .theme-card .theme-icon {
-        font-size: 18px !important;
-    }
-
-    .theme-card h3 {
-        font-size: 11px !important;
-        margin: 2px 0 !important;
-    }
-
+    .theme-card h3 { font-size: 11px !important; margin: 2px 0 !important; }
     .theme-card p {
         font-size: 8.5px !important;
         line-height: 1.1 !important;
@@ -847,22 +826,24 @@ html, body {
     }
 
 
-    /* ---------------- 📖 2. หน้าไดอารี่ (Scrapbook Page: สวยเป๊ะแบบในคอม) ---------------- */
+    /* 📖 2. หน้า Scrapbook: ล็อกหน้าจอให้อยู่กับที่ + คืนลายเส้นกระดาษเดิม */
     #scrapbook-page {
-        position: relative !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
         width: 100vw !important;
         height: 100vh !important;
-        overflow: hidden !important;
+        overflow: hidden !important; /* ห้ามเลื่อนทั้งหน้าจอเด็ดขาด */
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        padding-top: 50px !important;
-        padding-bottom: 70px !important;
+        padding-top: 55px !important;
+        padding-bottom: 75px !important;
         box-sizing: border-box !important;
     }
 
-    /* แถบปุ่มด้านบน */
+    /* ปุ่มบน */
     .top-nav {
         position: absolute !important;
         top: 12px !important;
@@ -873,42 +854,26 @@ html, body {
         z-index: 100 !important;
     }
 
-    .top-nav .nav-btn {
-        padding: 4px 10px !important;
-        font-size: 11px !important;
-    }
-
-    /* กระดาษไดอารี่: ได้สัดส่วนแบบในคอม หัวข้อไม่ทับ */
+    /* 📄 ตัวกระดาษ: คืนลายพื้นหลังเดิม + สัดส่วนพอดีจอ */
     .planner-paper {
         width: 90% !important;
-        max-width: 350px !important;
-        height: 68vh !important;
-        max-height: 540px !important;
-        transform: none !important;
+        max-width: 340px !important;
+        height: calc(100vh - 145px) !important; /* คำนวณความสูงให้พอดี ไม่ชนถาดล่าง */
+        max-height: 520px !important;
         margin: 0 auto !important;
-        background: #fffdfa !important;
-        border-radius: 16px !important;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.06) !important;
+        /* ❌ เอา background สีขาวออก เพื่อให้ภาพลายกระดาษและเส้นตารางเดิมแสดงผล */
+        background-size: 100% 100% !important;
+        background-repeat: no-repeat !important;
+        position: relative !important;
+        box-sizing: border-box !important;
     }
 
-    .planner-header {
-        padding-top: 15px !important;
-        margin-bottom: 0px !important;
-    }
-
-    .planner-header h1, 
-    #planner-month-title {
-        font-size: 26px !important;
-        margin: 0 !important;
-    }
-
-    /* 🏷️ ถาดแสตมป์: ล็อกติดขอบล่าง เป็นแถบแนวนอนสไลด์ได้แบบในคอม */
+    /* 🏷️ 3. ถาดแสตมป์: ติดขอบล่าง และเลื่อน (Scroll) ได้เฉพาะแถบนี้ */
     .stamp-palette {
         position: fixed !important;
         bottom: 0 !important;
         left: 0 !important;
         width: 100vw !important;
-        max-width: 100vw !important;
         background: rgba(255, 255, 255, 0.95) !important;
         border-top: 1.5px dashed #bcaaa4 !important;
         border-radius: 18px 18px 0 0 !important;
@@ -920,23 +885,26 @@ html, body {
         box-sizing: border-box !important;
         z-index: 200 !important;
         backdrop-filter: blur(8px) !important;
-        margin: 0 !important;
     }
 
     .palette-label {
         font-size: 10px !important;
         white-space: nowrap !important;
         color: #6d4c41 !important;
+        flex-shrink: 0 !important;
     }
 
+    /* 🌟 ให้เลื่อนแนวนอนได้เฉพาะตรงนี้ */
     .stamp-list {
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
-        overflow-x: auto !important;
+        overflow-x: auto !important; /* สไลด์ซ้าย-ขวาได้ */
+        overflow-y: hidden !important;
         gap: 6px !important;
         scrollbar-width: none !important;
         -webkit-overflow-scrolling: touch !important;
+        flex-grow: 1 !important;
     }
 
     .stamp-list::-webkit-scrollbar {
@@ -947,19 +915,11 @@ html, body {
         flex-shrink: 0 !important;
         padding: 5px 8px !important;
         font-size: 14px !important;
-        border-radius: 8px !important;
-    }
-
-    .stamp-btn.text-stamp-btn {
-        font-size: 9px !important;
-        padding: 3px 6px !important;
-        white-space: nowrap !important;
     }
 
     .clear-stamps-btn {
         flex-shrink: 0 !important;
         font-size: 9px !important;
         padding: 4px 6px !important;
-        white-space: nowrap !important;
     }
 }

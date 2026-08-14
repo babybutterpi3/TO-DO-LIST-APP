@@ -325,7 +325,6 @@ function markTodayComplete() {
         renderCalendar();
     }
 }
-}
 
 
 // ================= 📖 6. ระบบ SCRAPBOOK & STAMPS =================

@@ -378,25 +378,26 @@ function selectStamp(stampContent, btnElement) {
 }
 
 // 2. ปั๊มลงกระดาษ
+// 🌟 ฟังก์ชันปั๊มแสตมป์ (จะทำงานเฉพาะตอนที่เปิดหน้า Scrapbook อยู่เท่านั้น!)
 function stampOnPaper(event) {
-    console.log("คลิกที่กระดาษ! แสตมป์ปัจจุบัน:", selectedStamp, "วันที่เปิด:", currentViewingDay);
+    let scrapbookScreen = document.getElementById("scrapbook-page");
     
-    // ถ้ายังไม่ได้เลือกแสตมป์ ให้แจ้งเตือนเบาๆ
+    // ถ้าไม่ได้เปิดหน้า Scrapbook อยู่ หรือหน้าโดนซ่อนอยู่ ไม่ต้องทำอะไรเลย
+    if (!scrapbookScreen || !scrapbookScreen.classList.contains("active")) {
+        return;
+    }
+
     if (!selectedStamp) {
         alert("กรุณาเลือกแสตมป์จากถาดด้านล่างก่อนน้า ✨");
         return;
     }
 
-    // ถ้ายังไม่มีค่าวันที่ ให้ใช้วันที่วันนี้เป็นค่าเริ่มต้น
     if (!currentViewingDay) {
         currentViewingDay = new Date().getDate();
     }
 
     let paper = document.getElementById("planner-paper");
-    if (!paper) {
-        console.error("หา id='planner-paper' ไม่เจอ!");
-        return;
-    }
+    if (!paper) return;
 
     let rect = paper.getBoundingClientRect();
     let xPercent = ((event.clientX - rect.left) / rect.width) * 100;

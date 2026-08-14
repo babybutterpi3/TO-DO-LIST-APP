@@ -749,82 +749,122 @@ html, body {
 .envelope-card.open .wax-seal { opacity: 0; transform: scale(0); }
 .envelope-card.open .letter-content { opacity: 1; transform: translateY(0); }
 
-/* ================= 📱 จัดหน้าจอมือถือให้เป็นธรรมชาติ ================= */
+/* 🔒 ซ่อนหน้าที่ไม่ active ให้หายไปจริง ห้ามมาขวางคลิก */
+.screen:not(.active) {
+    display: none !important;
+    pointer-events: none !important;
+}
+
+/* ================= 📱 MOBILE: รวม 4 กล่องพอดีจอ + ไม่ล้น ================= */
 @media (max-width: 600px) {
 
-    /* 🌸 1. หน้าแรก (Home) */
+    /* 🏡 1. หน้า Home: ย่อทุกอย่างให้อยู่ในหน้าจอเดียว */
     #home-page {
-        height: auto !important;
-        min-height: 100vh;
-        overflow-y: auto !important; /* ให้เลื่อนจอลงมาดูการ์ดข้างล่างได้ */
-        padding: 40px 15px !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        overflow: hidden !important;
+        padding: 10px 15px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: flex-start !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+        gap: 5px !important;
     }
 
-    /* ห้ามตัดคำชื่อเว็บ To-Do Tray ให้ยาวสวยงามในแถวเดียว */
+    /* หัวข้อ To-Do Tray */
     #home-page h1,
     .main-title,
     .logo-title {
+        font-size: 28px !important;
+        margin: 0 !important;
         white-space: nowrap !important;
-        font-size: 38px !important;
-        margin: 10px 0 !important;
     }
 
-    /* การ์ดธีมเรียงเป็นแนวตั้ง 1 แถวตามปกติแบบสบายตา */
+    #home-page p,
+    .subtitle {
+        font-size: 11px !important;
+        margin: 2px 0 6px 0 !important;
+    }
+
+    /* ปุ่ม Streak */
+    .home-streak-btn,
+    .streak-btn {
+        padding: 5px 12px !important;
+        font-size: 11px !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* 📦 กล่องรวมการ์ด: จัดแบบ 2x2 ขนาดเล็กกะทัดรัด พอดี 4 ใบ */
     .theme-selection-grid, 
     .theme-container, 
     .themes-wrapper {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 15px !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        grid-template-rows: 1fr 1fr !important;
+        gap: 8px !important;
         width: 100% !important;
         max-width: 320px !important;
-        margin-top: 15px !important;
+        margin: 0 auto !important;
     }
 
+    /* การ์ดแต่ละใบ เล็ก กระชับ ไม่กินที่ */
     .theme-card {
-        width: 100% !important;
-        min-height: 90px !important;
-    }
-
-
-    /* 📖 2. หน้าไดอารี่ (Scrapbook) */
-    #scrapbook-page {
-        height: auto !important;
-        min-height: 100vh;
-        overflow-y: auto !important; /* เลื่อนดูถาดแสตมป์ด้านล่างได้ ไม่โดนบีบ */
-        padding: 20px 10px 40px 10px !important;
+        padding: 8px 6px !important;
+        min-height: 75px !important;
+        max-height: 90px !important;
+        border-radius: 12px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
+        justify-content: center !important;
     }
 
-    /* กระดาษไดอารี่ ขนาดปกติสวยงาม ไม่ย่อส่วน */
-    .planner-paper {
-        width: 95% !important;
-        max-width: 350px !important;
-        height: 520px !important; /* ความสูงมาตรฐานแบบในคอม */
-        transform: none !important; /* เอาการย่อส่วนออก */
-        margin: 15px auto !important;
-        flex-shrink: 0 !important;
+    .theme-card span,
+    .theme-card .theme-icon {
+        font-size: 18px !important;
     }
 
-    /* แถบปุ่มด้านบน */
-    .top-nav {
-        width: 95% !important;
-        max-width: 350px !important;
+    .theme-card h3 {
+        font-size: 11px !important;
+        margin: 2px 0 !important;
+    }
+
+    .theme-card p {
+        font-size: 8.5px !important;
+        line-height: 1.1 !important;
+        margin: 0 !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+    }
+
+
+    /* 📖 2. หน้าไดอารี่ Scrapbook */
+    #scrapbook-page {
+        height: 100vh !important;
+        padding: 10px 10px !important;
         display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
         justify-content: space-between !important;
+        box-sizing: border-box !important;
     }
 
-    /* ถาดแสตมป์ด้านล่าง วางต่อจากกระดาษแบบสบายๆ */
+    .planner-paper {
+        width: 100% !important;
+        max-width: 330px !important;
+        height: 58vh !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
+    }
+
     .stamp-palette {
-        width: 95% !important;
-        max-width: 350px !important;
-        margin-top: 10px !important;
-        flex-shrink: 0 !important;
+        width: 100% !important;
+        max-width: 330px !important;
+        padding: 6px 8px !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
     }
 }

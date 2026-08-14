@@ -1,25 +1,18 @@
-function addTodo() {
-    // ดึงข้อความจากช่องพิมพ์
-    let text = document.getElementById("todo-input").value;
-    
-    if (text !== "") {
-        // เปลี่ยนข้อความในป้ายราคาโทสไข่ดาวทันที!
-        document.querySelector(".item-toast .price-tag").innerText = text;
-        
-        // ล้างช่องพิมพ์ให้ว่าง
-        document.getElementById("todo-input").value = "";
-    }
-}
 let currentTheme = 'breakfast';
 let currentIndex = 0;
 let isRewardMode = false;
 
-/// 🏠 1. ฟังก์ชันเลือกธีม 
+// 🗓️ 1. โหลดข้อมูลประวัติ Streak & Scrapbook
+let checkedDays = JSON.parse(localStorage.getItem("myStreakDays")) || [];
+let scrapbookHistory = JSON.parse(localStorage.getItem("myScrapbookHistory")) || {};
+
+// 🏠 2. ฟังก์ชันเลือกธีม
 function selectTheme(themeName) {
     currentTheme = themeName;
     
     document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");
+        screen.style.display = "none";
     });
     
     setTimeout(() => {
@@ -29,29 +22,33 @@ function selectTheme(themeName) {
         } else if (themeName === 'fruits') {
             targetScreen = document.getElementById("fruits-page");
         } else if (themeName === 'picnic') {
-            targetScreen = document.getElementById("picnic-page"); // 🌟 เปิดหน้าปิคนิค!
+            targetScreen = document.getElementById("picnic-page");
         }
         
         if (targetScreen) {
             targetScreen.classList.add("active");
+            targetScreen.style.display = "flex";
             resetTray(); 
         }
     }, 100);
 }
 
-// 🔙 2. ย้อนกลับหน้า Home
+// 🔙 3. ย้อนกลับหน้า Home
 function goToHome() {
     document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");
+        screen.style.display = "none";
     });
     setTimeout(() => {
         let home = document.getElementById("home-page");
-        if (home) home.classList.add("active");
+        if (home) {
+            home.classList.add("active");
+            home.style.display = "flex";
+        }
     }, 100);
 }
 
-// ✍️ 3. ฟังก์ชันเพิ่ม To-Do (เจาะจงเฉพาะปุ่ม .cute-btn ด้านล่าง!)
-// ✍️ อัปเดตให้ addTodo() บันทึกประวัติ To-Do ลง Scrapbook
+// ✍️ 4. ฟังก์ชันเพิ่ม To-Do & Seal It
 function addTodo() {
     let activeScreen = document.querySelector(".screen.active");
     if (!activeScreen) return;
@@ -95,7 +92,7 @@ function addTodo() {
         }
         
     } else {
-        // 🌟 เมื่ออยู่ในโหมดกด Seal It! (บันทึกรางวัล + บันทึก To-Do ทั้งหมดของวันนี้)
+        // 🌟 โหมดกด Seal It!
         let rewardDisplay = activeScreen.querySelector(".reward-text");
         if (rewardDisplay) rewardDisplay.innerText = "💌 " + text;
         
@@ -106,10 +103,10 @@ function addTodo() {
             envelope.style.transform = "translate(-50%, -50%) scale(1)";
         }
         
-        // 1. บันทึกเช็กอิน
+        // 1. บันทึกเช็กอิน Streak
         markTodayComplete();
 
-        // 2. 🌟 รวบรวมข้อความ To-Do ทั้งหมดที่พิมพ์ไว้ในหน้านี้
+        // 2. รวบรวม To-Do ทั้งหมด
         let todayTasks = [];
         allPriceTags.forEach(tag => {
             if (tag.innerText && tag.innerText !== "") {
@@ -117,7 +114,7 @@ function addTodo() {
             }
         });
 
-        // 3. 🌟 บันทึกลง Scrapbook History ของวันนี้
+        // 3. บันทึกลง Scrapbook History
         saveScrapbookData(todayTasks, text);
 
         isRewardMode = false;
@@ -133,7 +130,7 @@ function addTodo() {
     input.value = "";
 }
 
-// 💌 4. ฟังก์ชันกดเปิดจดหมาย
+// 💌 5. ฟังก์ชันกดเปิดจดหมาย
 function openEnvelope() {
     let activeScreen = document.querySelector(".screen.active");
     if (!activeScreen) return;
@@ -154,12 +151,11 @@ function openEnvelope() {
     }
 }
 
-// 🔄 5. ตั้งค่าถาดเริ่มต้น + สลับข้อความน่ารักๆ ตามธีม
+// 🔄 6. ตั้งค่าถาดเริ่มต้น
 function resetTray() {
     let activeScreen = document.querySelector(".screen.active");
     if (!activeScreen) return;
 
-    // 1. ซ่อนอาหารและจดหมายไว้ก่อน
     let allFoods = activeScreen.querySelectorAll(".food-item");
     allFoods.forEach(food => {
         food.style.display = "none";
@@ -181,11 +177,9 @@ function resetTray() {
     let input = activeScreen.querySelector("input[type='text']");
     let btn = activeScreen.querySelector(".cute-btn");
     
-    // คืนค่าปุ่มโฮมซ้ายบน
     let navBtn = activeScreen.querySelector(".nav-btn");
     if (navBtn) navBtn.innerText = "🏠 Themes";
 
-    // 🌟 2. สลับข้อความ Placeholder & ปุ่ม ตามธีมปัจจุบัน!
     if (input && btn) {
         if (currentTheme === 'breakfast') {
             input.placeholder = "what's cooking today, bff? 🪄";
@@ -201,7 +195,7 @@ function resetTray() {
     }
 }
 
-// 6. ดักจับการกด Enter และการคลิกจิ้มอาหารหาย
+// ⌨️ 7. ดักจับปุ่มกด Enter และการแตะอาหาร
 document.addEventListener("DOMContentLoaded", function() {
     document.addEventListener("keypress", function(e) {
         if (e.key === "Enter") {
@@ -220,54 +214,46 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// 7. 🗓️ โค้ดระบบ Streak Check-in
-let checkedDays = JSON.parse(localStorage.getItem("myStreakDays")) || [];
-
-// 🗓️ เปิด Modal ปฏิทิน (สั่งวาดปฏิทินใหม่ทุกครั้งที่เปิด)
+// 🗓️ 8. ระบบ Streak Modal & Calendar
 function openStreakModal() {
-    renderCalendar(); // 🌟 บังคับวาดปฏิทินก่อน!
+    renderCalendar();
     let modal = document.getElementById("streak-modal");
     if (modal) {
         modal.style.display = "flex";
     }
 }
 
-// ปิด Modal
 function closeStreakModal() {
-    document.getElementById("streak-modal").style.display = "none";
+    let modal = document.getElementById("streak-modal");
+    if (modal) modal.style.display = "none";
 }
 
-// 📅 ฟังก์ชันวาดปฏิทิน + เชื่อมคลิกไปหน้า Scrapbook
 function renderCalendar() {
     let grid = document.getElementById("calendar-grid");
     if (!grid) return;
     
-    grid.innerHTML = ""; // ล้างหน้าปฏิทินเก่า
+    grid.innerHTML = "";
     
     let now = new Date();
     let monthNames = ["January", "February", "March", "April", "May", "June", 
                       "July", "August", "September", "October", "November", "December"];
     
-    // อัปเดตชื่อเดือน
     let monthHeader = document.getElementById("calendar-month");
     if (monthHeader) {
         monthHeader.innerText = "🌸 " + monthNames[now.getMonth()] + " " + now.getFullYear() + " 🌸";
     }
 
-    // คำนวณจำนวนวันในเดือนนี้
     let totalDays = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
 
     for (let i = 1; i <= totalDays; i++) {
         let dayBox = document.createElement("div");
         dayBox.classList.add("day-box");
         
-        // จิ้มวันที่เพื่อไปเปิดหน้า Scrapbook ของวันนั้น
         dayBox.onclick = function() {
             openScrapbookForDay(i);
         };
         dayBox.style.cursor = "pointer";
         
-        // เช็กว่าทำสำเร็จหรือยัง
         if (checkedDays.includes(i)) {
             dayBox.classList.add("checked");
             dayBox.innerText = "✨"; 
@@ -278,13 +264,16 @@ function renderCalendar() {
         grid.appendChild(dayBox);
     }
 
+    // อัปเดตตัวเลข Streak
     let streakNum = document.getElementById("streak-num");
-    if (streakNum) {
-        streakNum.innerText = checkedDays.length;
+    if (streakNum) streakNum.innerText = checkedDays.length;
+
+    let completedText = document.querySelector(".streak-count, .streak-modal p, #streak-modal span");
+    if (completedText && completedText.innerText.includes("Completed")) {
+        completedText.innerHTML = `🔥 Completed: ${checkedDays.length} Days`;
     }
 }
 
-// 🌟 ฟังก์ชันนี้สั่งให้ทำงานตอนกดผนึกจดหมาย (Seal) สำเร็จ!
 function markTodayComplete() {
     let today = new Date().getDate();
     if (!checkedDays.includes(today)) {
@@ -293,12 +282,9 @@ function markTodayComplete() {
     }
 }
 
-// 8. 📖 คลังบันทึกประวัติ Scrapbook
-let scrapbookHistory = JSON.parse(localStorage.getItem("myScrapbookHistory")) || {};
-
-// 💾 บันทึก To-Do + Reward
+// 📖 9. บันทึกและแสดงผล Scrapbook Planner
 function saveScrapbookData(tasks, reward) {
-    let todayKey = new Date().getDate(); // ใช้เลขวันที่เป็น Key (เช่น 13)
+    let todayKey = new Date().getDate();
     scrapbookHistory[todayKey] = {
         tasks: tasks,
         reward: reward
@@ -306,7 +292,6 @@ function saveScrapbookData(tasks, reward) {
     localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
 }
 
-// 🎨 วาดและแปะ To-Do + Reward ลงในหน้า Scrapbook Planner
 function renderScrapbookPage(dayNum) {
     let now = new Date();
     let monthNames = ["January", "February", "March", "April", "May", "June", 
@@ -321,48 +306,38 @@ function renderScrapbookPage(dayNum) {
     let body = document.getElementById("planner-body");
     if (!body) return;
     
-    body.innerHTML = ""; // ล้างหน้ากระดาษก่อน
+    body.innerHTML = "";
 
     let data = scrapbookHistory[dayNum];
     
     if (data && data.tasks) {
-        // ตำแหน่งแนวตั้ง % ของแต่ละช่วง (morning, sunlit, afternoon, nighttime)
         let topPositions = [5, 23, 42, 60]; 
         
-        // 1. วาดรายการ To-Do ในช่องต่างๆ
         data.tasks.forEach((taskText, index) => {
             let sticker = document.createElement("div");
             sticker.classList.add("scrapbook-sticker");
             
-            let randomRotate = (Math.random() * 10 - 5).toFixed(1); // เอียง -5 ถึง 5 องศา
-            
-            // 🌟 เขยิบมาทางซ้ายมากขึ้น! (ปรับเหลือ 28% - 48%)
+            let randomRotate = (Math.random() * 10 - 5).toFixed(1);
             let randomLeft = Math.floor(Math.random() * 20) + 28; 
-
             let topPos = topPositions[index] || (18 * index);
 
             sticker.style.top = topPos + "%";
             sticker.style.left = randomLeft + "%";
             sticker.style.transform = "rotate(" + randomRotate + "deg)";
-
             sticker.innerHTML = '<div class="tape-tag">📌 ' + taskText + '</div>';
             body.appendChild(sticker);
         });
 
-        // 2. ข้อความรางวัลตรงช่อง cozy unwind (ช่องล่างสุด)
         if (data.reward) {
             let rewardSticker = document.createElement("div");
             rewardSticker.classList.add("scrapbook-sticker");
             
             let rewardRotate = (Math.random() * 8 - 4).toFixed(1);
-            
-            // 🌟 เขยิบมาทางซ้ายมากขึ้นเช่นกัน! (30% - 50%)
             let rewardLeft = Math.floor(Math.random() * 20) + 30;
 
             rewardSticker.style.top = "80%"; 
             rewardSticker.style.left = rewardLeft + "%";
             rewardSticker.style.transform = "rotate(" + rewardRotate + "deg)";
-
             rewardSticker.innerHTML = '<div class="tape-tag reward-tag">💌 ' + data.reward + '</div>';
             body.appendChild(rewardSticker);
         }
@@ -372,21 +347,17 @@ function renderScrapbookPage(dayNum) {
     }
 }
 
-// 👆 สั่งให้เปิดหน้า Scrapbook พอกดจิ้มวันที่ใน Streak Modal
 function openScrapbookForDay(dayNum) {
-    closeStreakModal(); // 1. ปิด Modal ปฏิทินก่อน
-
-    // 2. ซ่อนหน้าอื่นๆ ทั้งหมด
+    closeStreakModal();
     document.querySelectorAll(".screen").forEach(function(s) {
         s.classList.remove("active");
         s.style.display = "none"; 
     });
     
-    // 3. ดึงหน้า Scrapbook ขึ้นมาแสดง!
     let scrapbookScreen = document.getElementById("scrapbook-page");
     if (scrapbookScreen) {
         scrapbookScreen.classList.add("active");
-        scrapbookScreen.style.display = "flex"; // สั่งเปิดหน้าจอแบบชัวร์ๆ!
-        renderScrapbookPage(dayNum); // วาด To-Do ของวันที่จิ้ม
+        scrapbookScreen.style.display = "flex";
+        renderScrapbookPage(dayNum);
     }
 }

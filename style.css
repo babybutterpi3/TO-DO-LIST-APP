@@ -748,3 +748,97 @@ html, body {
 .envelope-card.open { height: 160px; background: #fffdf0; }
 .envelope-card.open .wax-seal { opacity: 0; transform: scale(0); }
 .envelope-card.open .letter-content { opacity: 1; transform: translateY(0); }
+
+/* ================= 📱 MOBILE RESPONSIVE (สำหรับหน้าจอมือถือ) ================= */
+@media (max-width: 600px) {
+    
+    /* 1. จัดหน้า Home ให้การ์ดเรียง 2 แถว กะทัดรัดพอดีจอ */
+    #home-page {
+        padding: 20px 10px;
+        justify-content: flex-start;
+        gap: 12px;
+    }
+
+    .theme-selection-grid, .theme-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* เรียง 2 คอลัมน์กะทัดรัด */
+        gap: 10px !important;
+        width: 95% !important;
+        max-width: 360px;
+    }
+
+    .theme-card {
+        padding: 12px 8px !important;
+        font-size: 13px !important;
+    }
+
+    .theme-card h3 {
+        font-size: 14px !important;
+        margin: 4px 0 !important;
+    }
+
+    .theme-card p {
+        font-size: 10px !important;
+        line-height: 1.2 !important;
+    }
+
+    /* 2. หน้า Scrapbook Planner ย่อสเกลกระดาษให้ไม่ล้น */
+    #scrapbook-page {
+        padding: 10px 5px !important;
+        gap: 8px !important;
+        justify-content: flex-start !important;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .top-nav {
+        width: 90% !important;
+        margin-bottom: 5px !important;
+    }
+
+    .planner-paper {
+        width: 92vw !important;
+        max-width: 340px !important;
+        height: 52vh !important; /* ปรับความสูงกระดาษให้พอดีสายตา */
+        min-height: 360px;
+        transform: scale(0.95);
+        margin: 0 auto !important;
+    }
+
+    .planner-header h1, #planner-month-title {
+        font-size: 26px !important; /* ย่อขนาดชื่อเดือน August Log */
+    }
+
+    .date-tag {
+        font-size: 11px !important;
+    }
+
+    /* 3. ถาดแสตมป์ ย่อให้เล็กกระทัดรัดน่ารัก ไม่บังกระดาษ */
+    .stamp-palette {
+        width: 92vw !important;
+        max-width: 340px !important;
+        padding: 8px 10px !important;
+        gap: 6px !important;
+        border-radius: 14px !important;
+    }
+
+    .palette-label {
+        font-size: 11px !important;
+    }
+
+    .stamp-btn {
+        padding: 4px 6px !important;
+        font-size: 14px !important;
+        border-radius: 8px !important;
+    }
+
+    .stamp-btn.text-stamp-btn {
+        font-size: 9px !important;
+        padding: 3px 5px !important;
+    }
+
+    .clear-stamps-btn {
+        font-size: 9px !important;
+        padding: 3px 6px !important;
+    }
+}

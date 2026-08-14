@@ -866,7 +866,7 @@ html, body {
 
     .planner-header h1, 
     #planner-month-title {
-        font-size: 42px !important; /* ย่อขนาดตัวอักษร August Log ให้เข้าล็อกพอดี */
+        font-size: 35px !important; /* ย่อขนาดตัวอักษร August Log ให้เข้าล็อกพอดี */
         line-height: 1.2 !important;
         margin: 0 !important;
     }

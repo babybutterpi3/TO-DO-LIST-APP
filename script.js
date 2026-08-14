@@ -36,12 +36,12 @@ docRef.onSnapshot((doc) => {
     if (doc.exists) {
         const cloudData = doc.data();
         
-        // 1. อัปเดต Streak
+       // 1. อัปเดต Streak
         if (cloudData.streakDays) {
-            checkedDays = cloudData.streakDays;
+            // 🌟 แปลงทุกค่าให้เป็น Number ชัวร์ๆ ป้องกันประเภทข้อมูลเพี้ยน
+            checkedDays = cloudData.streakDays.map(d => Number(d));
             localStorage.setItem("myStreakDays", JSON.stringify(checkedDays));
             
-            // 🌟 เพิ่มบรรทัดนี้: บังคับอัปเดตปฏิทินทันทีที่มีข้อมูลมาถึง!
             if (typeof renderCalendar === "function") {
                 renderCalendar();
             }
@@ -269,7 +269,8 @@ function renderCalendar() {
         dayBox.onclick = function() { openScrapbookForDay(i); };
         dayBox.style.cursor = "pointer";
         
-        if (checkedDays.includes(i)) {
+        // แปลงเช็กทั้งแบบตัวเลข เพื่อความแม่นยำ
+        if (checkedDays.map(d => Number(d)).includes(i)) {
             dayBox.classList.add("checked");
             dayBox.innerText = "✨"; 
         } else {

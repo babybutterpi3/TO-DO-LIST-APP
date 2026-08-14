@@ -361,3 +361,124 @@ function openScrapbookForDay(dayNum) {
         renderScrapbookPage(dayNum);
     }
 }
+
+// ================= 🎨 STAMP SYSTEM =================
+let selectedStamp = null;
+let currentViewingDay = null; // เก็บว่าตอนนี้เปิด Scrapbook ของวันที่เท่าไหร่
+
+// 1. เลือกแสตมป์
+function selectStamp(stampContent, btnElement) {
+    selectedStamp = stampContent;
+    console.log("เลือกแสตมป์แล้ว:", selectedStamp);
+    
+    document.querySelectorAll(".stamp-btn").forEach(b => b.classList.remove("active"));
+    if (btnElement) {
+        btnElement.classList.add("active");
+    }
+}
+
+// 2. ปั๊มลงกระดาษ
+function stampOnPaper(event) {
+    console.log("คลิกที่กระดาษ! แสตมป์ปัจจุบัน:", selectedStamp, "วันที่เปิด:", currentViewingDay);
+    
+    // ถ้ายังไม่ได้เลือกแสตมป์ ให้แจ้งเตือนเบาๆ
+    if (!selectedStamp) {
+        alert("กรุณาเลือกแสตมป์จากถาดด้านล่างก่อนน้า ✨");
+        return;
+    }
+
+    // ถ้ายังไม่มีค่าวันที่ ให้ใช้วันที่วันนี้เป็นค่าเริ่มต้น
+    if (!currentViewingDay) {
+        currentViewingDay = new Date().getDate();
+    }
+
+    let paper = document.getElementById("planner-paper");
+    if (!paper) {
+        console.error("หา id='planner-paper' ไม่เจอ!");
+        return;
+    }
+
+    let rect = paper.getBoundingClientRect();
+    let xPercent = ((event.clientX - rect.left) / rect.width) * 100;
+    let yPercent = ((event.clientY - rect.top) / rect.height) * 100;
+    let rotate = (Math.random() * 16 - 8).toFixed(1);
+
+    let finalContent = selectedStamp;
+    let isText = false;
+
+    if (selectedStamp === 'TIME_NOW') {
+        let d = new Date();
+        let hours = d.getHours().toString().padStart(2, '0');
+        let mins = d.getMinutes().toString().padStart(2, '0');
+        finalContent = `⏱️ ${hours}:${mins}`;
+        isText = true;
+    } else if (selectedStamp.length > 2) {
+        isText = true;
+    }
+
+    if (!scrapbookHistory[currentViewingDay]) {
+        scrapbookHistory[currentViewingDay] = { tasks: [], reward: "" };
+    }
+    if (!scrapbookHistory[currentViewingDay].stamps) {
+        scrapbookHistory[currentViewingDay].stamps = [];
+    }
+
+    let stampData = {
+        content: finalContent,
+        x: xPercent,
+        y: yPercent,
+        rotate: rotate,
+        isText: isText
+    };
+
+    scrapbookHistory[currentViewingDay].stamps.push(stampData);
+    localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
+
+    drawSingleStamp(stampData);
+}
+
+// 3. ฟังก์ชันวาดแสตมป์เดี่ยวๆ
+function drawSingleStamp(stampData) {
+    let paper = document.getElementById("planner-paper");
+    let el = document.createElement("div");
+    el.classList.add("stamped-item");
+    if (stampData.isText) el.classList.add("text-stamp");
+
+    el.innerText = stampData.content;
+    el.style.left = stampData.x + "%";
+    el.style.top = stampData.y + "%";
+    el.style.transform = `translate(-50%, -50%) rotate(${stampData.rotate}deg)`;
+
+    paper.appendChild(el);
+}
+
+// 4. ล้างแสตมป์ทั้งหมดของวันที่กำลังเปิด
+function clearDayStamps() {
+    if (!currentViewingDay || !scrapbookHistory[currentViewingDay]) return;
+    
+    scrapbookHistory[currentViewingDay].stamps = [];
+    localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
+    
+    // ลบ element แสตมป์ออกจากหน้า
+    document.querySelectorAll(".stamped-item").forEach(item => item.remove());
+}
+
+// 🌟 อัปเดตฟังก์ชัน renderScrapbookPage เดิม เพื่อให้วาดแสตมป์เก่าที่เคยปั๊มไว้ด้วย
+let originalRenderScrapbookPage = renderScrapbookPage;
+renderScrapbookPage = function(dayNum) {
+    currentViewingDay = dayNum; // จำว่าเปิดวันไหน
+    
+    // ลบแสตมป์เก่าบนหน้าจอออกก่อน
+    document.querySelectorAll(".stamped-item").forEach(item => item.remove());
+
+    // เรียกฟังก์ชันวาดข้อความเดิม
+    if (typeof originalRenderScrapbookPage === "function") {
+        originalRenderScrapbookPage(dayNum);
+    }
+
+    // วาดแสตมป์ที่เคยปั๊มไว้ของวันนี้
+    let data = scrapbookHistory[dayNum];
+    if (data && data.stamps && Array.isArray(data.stamps)) {
+        data.stamps.forEach(s => drawSingleStamp(s));
+    }
+};

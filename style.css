@@ -493,6 +493,135 @@ html, body {
     color: #4e342e;
 }
 
+/* 6.1 ================= 🎨 STAMP PALETTE & STAMPING ================= */
+
+/* ปรับให้หน้า Scrapbook เรียงหัว-ท้ายได้สวยงาม */
+#scrapbook-page {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 50px;
+    gap: 15px;
+}
+
+/* พื้นที่กระดาษ Planner */
+.planner-paper {
+    position: relative;
+    cursor: crosshair; /* เปลี่ยนเคอร์เซอร์เป็นเป้าเล็งตอนปั๊ม */
+    user-select: none;
+    overflow: hidden;
+}
+
+/* กล่องถาดแสตมป์ */
+.stamp-palette {
+    background: rgba(255, 255, 255, 0.92);
+    border: 2px dashed #bcaaa4;
+    border-radius: 20px;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(8px);
+    max-width: 90%;
+    flex-wrap: wrap;
+    justify-content: center;
+    z-index: 10;
+}
+
+.palette-label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #6d4c41;
+}
+
+.stamp-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* ปุ่มเลือกแสตมป์แต่ละตัว */
+.stamp-btn {
+    background: #fffdf9;
+    border: 1.5px solid #d7ccc8;
+    border-radius: 12px;
+    padding: 6px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+}
+
+.stamp-btn:hover {
+    transform: translateY(-2px) scale(1.1);
+    border-color: #8d6e63;
+    background: #fff8e1;
+}
+
+/* ปุ่มที่กำลังถูกเลือกใช้งาน */
+.stamp-btn.active {
+    background: #ffe0b2;
+    border-color: #e65100;
+    box-shadow: 0 0 8px rgba(230, 81, 0, 0.4);
+    transform: scale(1.1);
+}
+
+/* ปุ่มตรายางข้อความ */
+.stamp-btn.text-stamp-btn {
+    font-size: 11px;
+    font-weight: bold;
+    color: #5d4037;
+    border-radius: 8px;
+}
+
+/* ปุ่มล้างแสตมป์ */
+.clear-stamps-btn {
+    background: #efebe9;
+    border: 1px solid #bcaaa4;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 11px;
+    color: #8d6e63;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.clear-stamps-btn:hover {
+    background: #ffcdd2;
+    color: #c62828;
+    border-color: #e57373;
+}
+
+/* ตัวแสตมป์ที่ถูกปั๊มลงบนกระดาษ */
+.stamped-item {
+    position: absolute;
+    pointer-events: none; /* เพื่อไม่ให้บังการคลิกครั้งต่อไป */
+    user-select: none;
+    font-size: 24px;
+    animation: stampPop 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5;
+}
+
+/* สไตล์เฉพาะตรายางข้อความบนกระดาษ */
+.stamped-item.text-stamp {
+    font-size: 12px;
+    font-weight: 800;
+    color: #b71c1c; /* สีหมึกแดงวินเทจ */
+    border: 1.5px solid #b71c1c;
+    border-radius: 4px;
+    padding: 2px 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes stampPop {
+    0% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
 
 /* ==================================================
    📅 7. CALENDAR MODAL (ปฏิทิน Streak)

@@ -831,51 +831,66 @@ html, body {
     }
 
     .theme-card p {
-        font-size: 8.5px !important;
-        line-height: 1.1 !important;
-        margin: 0 !important;
-        display: -webkit-box !important;
-        -webkit-line-clamp: 2 !important;
-        -webkit-box-orient: vertical !important;
-        overflow: hidden !important;
-    }
+    font-size: 8.5px !important;
+    line-height: 1.1 !important;
+    margin: 0 !important;
+
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important; /* 👈 เติมบรรทัดนี้ เส้นเตือนจะหายทันที */
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+}
 
 
-/* 📖 หน้าไดอารี่ Scrapbook สำหรับมือถือ */
+   /* 📖 หน้าไดอารี่ Scrapbook สำหรับมือถือ */
     #scrapbook-page {
         height: 100vh !important;
-        overflow-y: auto !important; /* ให้เลื่อนจอได้ */
-        padding: 10px 0 30px 0 !important;
+        overflow-y: auto !important;
+        padding: 10px 0 20px 0 !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        gap: 0px !important;
+        gap: 0 !important;
     }
 
-    /* 1. ปุ่มด้านบน */
+    /* 1. แถบปุ่มด้านบน */
     .top-nav {
-        width: 320px !important;
-        margin-bottom: 5px !important;
+        width: 310px !important;
+        margin-bottom: 2px !important;
         display: flex !important;
         justify-content: space-between !important;
     }
 
-    /* 2. ตัวกระดาษ: ล็อกขนาดต้นฉบับไว้ แล้วสั่ง zoom/scale ย่อลงมาทั้งแผ่น */
-    .planner-paper {
-        width: 340px !important;        /* ล็อกความกว้างต้นฉบับ */
-        height: 520px !important;       /* ล็อกความสูงต้นฉบับ เส้นตารางจะไม่ย่น */
-        transform: scale(0.78) !important; /* สั่งย่อขนาดลง 22% ให้พอดีจอมือถือ */
-        transform-origin: top center !important; /* ย่อโดยยึดจุดกึ่งกลางด้านบน */
-        margin: 0 auto -90px auto !important; /* ดึงพื้นที่ว่างด้านล่างที่เกิดจากการย่อกลับขึ้นมา */
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important;
+    /* 2. ดึงคำว่า August Log ลงมาให้ตรงกับช่องตาราง ไม่เกยเส้น */
+    .planner-header {
+        padding-top: 25px !important; /* ดันข้อความด้านบนลงมาข้างล่าง */
+        margin-bottom: 0px !important;
     }
 
-    /* 3. ถาดแสตมป์ด้านล่าง */
+    .planner-header h1, 
+    #planner-month-title {
+        font-size: 28px !important;
+        margin-top: 5px !important;
+    }
+
+    /* 3. ตัวกระดาษ: ย่อส่วน + ตัดพื้นที่ว่างส่วนเกินด้านล่างออก */
+    .planner-paper {
+        width: 340px !important;
+        height: 520px !important;
+        transform: scale(0.78) !important;
+        transform-origin: top center !important;
+        /* 🌟 ดึงถาดด้านล่างให้เด้งขึ้นมาแนบชิดพอดี ด้วย margin-bottom ติดลบ */
+        margin: 0 auto -120px auto !important; 
+    }
+
+    /* 4. ถาดแสตมป์ด้านล่าง */
     .stamp-palette {
-        width: 90% !important;
-        max-width: 330px !important;
-        padding: 8px 10px !important;
-        border-radius: 16px !important;
+        width: 88% !important;
+        max-width: 320px !important;
+        padding: 6px 10px !important;
+        margin-top: 0 !important;
         z-index: 10 !important;
     }
+}

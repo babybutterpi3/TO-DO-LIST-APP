@@ -756,9 +756,16 @@ html, body {
 }
 
 /* ================= 📱 MOBILE: รวม 4 กล่องพอดีจอ + ไม่ล้น ================= */
+/* 🔒 ซ่อนหน้าที่ไม่ได้เปิด ไม่ให้มากีดขวางการคลิก */
+.screen:not(.active) {
+    display: none !important;
+    pointer-events: none !important;
+}
+
+/* ================= 📱 MOBILE RESPONSIVE (MERGED) ================= */
 @media (max-width: 600px) {
 
-    /* 🏡 1. หน้า Home: ย่อทุกอย่างให้อยู่ในหน้าจอเดียว */
+    /* ---------------- 🏡 1. หน้าแรก (Home Page: รวม 4 กล่องพอดีจอ) ---------------- */
     #home-page {
         height: 100vh !important;
         max-height: 100vh !important;
@@ -772,7 +779,6 @@ html, body {
         gap: 5px !important;
     }
 
-    /* หัวข้อ To-Do Tray */
     #home-page h1,
     .main-title,
     .logo-title {
@@ -787,7 +793,6 @@ html, body {
         margin: 2px 0 6px 0 !important;
     }
 
-    /* ปุ่ม Streak */
     .home-streak-btn,
     .streak-btn {
         padding: 5px 12px !important;
@@ -795,7 +800,7 @@ html, body {
         margin-bottom: 8px !important;
     }
 
-    /* 📦 กล่องรวมการ์ด: จัดแบบ 2x2 ขนาดเล็กกะทัดรัด พอดี 4 ใบ */
+    /* กล่อง Grid 2x2 ขนาดกะทัดรัด */
     .theme-selection-grid, 
     .theme-container, 
     .themes-wrapper {
@@ -808,7 +813,7 @@ html, body {
         margin: 0 auto !important;
     }
 
-    /* การ์ดแต่ละใบ เล็ก กระชับ ไม่กินที่ */
+    /* การ์ดแต่ละใบ */
     .theme-card {
         padding: 8px 6px !important;
         min-height: 75px !important;
@@ -831,66 +836,130 @@ html, body {
     }
 
     .theme-card p {
-    font-size: 8.5px !important;
-    line-height: 1.1 !important;
-    margin: 0 !important;
+        font-size: 8.5px !important;
+        line-height: 1.1 !important;
+        margin: 0 !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+    }
 
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    line-clamp: 2 !important; /* 👈 เติมบรรทัดนี้ เส้นเตือนจะหายทันที */
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
-}
 
-
-   /* 📖 หน้าไดอารี่ Scrapbook สำหรับมือถือ */
+    /* ---------------- 📖 2. หน้าไดอารี่ (Scrapbook Page: สวยเป๊ะแบบในคอม) ---------------- */
     #scrapbook-page {
+        position: relative !important;
+        width: 100vw !important;
         height: 100vh !important;
-        overflow-y: auto !important;
-        padding: 10px 0 20px 0 !important;
+        overflow: hidden !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        gap: 0 !important;
+        padding-top: 50px !important;
+        padding-bottom: 70px !important;
+        box-sizing: border-box !important;
     }
 
-    /* 1. แถบปุ่มด้านบน */
+    /* แถบปุ่มด้านบน */
     .top-nav {
-        width: 310px !important;
-        margin-bottom: 2px !important;
+        position: absolute !important;
+        top: 12px !important;
+        left: 15px !important;
+        right: 15px !important;
         display: flex !important;
         justify-content: space-between !important;
+        z-index: 100 !important;
     }
 
-    /* 2. ดึงคำว่า August Log ลงมาให้ตรงกับช่องตาราง ไม่เกยเส้น */
+    .top-nav .nav-btn {
+        padding: 4px 10px !important;
+        font-size: 11px !important;
+    }
+
+    /* กระดาษไดอารี่: ได้สัดส่วนแบบในคอม หัวข้อไม่ทับ */
+    .planner-paper {
+        width: 90% !important;
+        max-width: 350px !important;
+        height: 68vh !important;
+        max-height: 540px !important;
+        transform: none !important;
+        margin: 0 auto !important;
+        background: #fffdfa !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.06) !important;
+    }
+
     .planner-header {
-        padding-top: 25px !important; /* ดันข้อความด้านบนลงมาข้างล่าง */
+        padding-top: 15px !important;
         margin-bottom: 0px !important;
     }
 
     .planner-header h1, 
     #planner-month-title {
-        font-size: 28px !important;
-        margin-top: 5px !important;
+        font-size: 26px !important;
+        margin: 0 !important;
     }
 
-    /* 3. ตัวกระดาษ: ย่อส่วน + ตัดพื้นที่ว่างส่วนเกินด้านล่างออก */
-    .planner-paper {
-        width: 340px !important;
-        height: 520px !important;
-        transform: scale(0.78) !important;
-        transform-origin: top center !important;
-        /* 🌟 ดึงถาดด้านล่างให้เด้งขึ้นมาแนบชิดพอดี ด้วย margin-bottom ติดลบ */
-        margin: 0 auto -120px auto !important; 
-    }
-
-    /* 4. ถาดแสตมป์ด้านล่าง */
+    /* 🏷️ ถาดแสตมป์: ล็อกติดขอบล่าง เป็นแถบแนวนอนสไลด์ได้แบบในคอม */
     .stamp-palette {
-        width: 88% !important;
-        max-width: 320px !important;
-        padding: 6px 10px !important;
-        margin-top: 0 !important;
-        z-index: 10 !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-top: 1.5px dashed #bcaaa4 !important;
+        border-radius: 18px 18px 0 0 !important;
+        padding: 8px 12px 14px 12px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 8px !important;
+        box-sizing: border-box !important;
+        z-index: 200 !important;
+        backdrop-filter: blur(8px) !important;
+        margin: 0 !important;
+    }
+
+    .palette-label {
+        font-size: 10px !important;
+        white-space: nowrap !important;
+        color: #6d4c41 !important;
+    }
+
+    .stamp-list {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        gap: 6px !important;
+        scrollbar-width: none !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .stamp-list::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .stamp-btn {
+        flex-shrink: 0 !important;
+        padding: 5px 8px !important;
+        font-size: 14px !important;
+        border-radius: 8px !important;
+    }
+
+    .stamp-btn.text-stamp-btn {
+        font-size: 9px !important;
+        padding: 3px 6px !important;
+        white-space: nowrap !important;
+    }
+
+    .clear-stamps-btn {
+        flex-shrink: 0 !important;
+        font-size: 9px !important;
+        padding: 4px 6px !important;
+        white-space: nowrap !important;
     }
 }

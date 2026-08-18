@@ -11,30 +11,28 @@
 
 
 /* ==================================================
-   📱 1. GLOBAL & BACKGROUND (โครงสร้างหลัก + รูปพื้นหลัง)
+   📱 1. GLOBAL & BACKGROUND (แก้ Scrollbar ล้นจอ)
    ================================================== */
 html, body {
     margin: 0;
     padding: 0;
     font-family: 'Kanit', sans-serif;
-    
-    min-height: 100vh;
-    width: 100vw;
-    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* ไม่ให้หน้าหลักล้น */
+    box-sizing: border-box;
 }
 
-/* ล็อกจอมือถือ */
+/* 🌟 กล่องหลักล็อกหน้าจอให้ขยายเต็ม 100% ของจอภาพ */
 .phone-screen {
     position: relative;
     width: 100vw;
     height: 100vh;
     height: 100dvh;
-    overflow: hidden;
+    overflow: hidden !important;
     margin: 0;
     padding: 0;
     border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
 }
 
 /* สวิตช์ซ่อน/โชว์หน้า */
@@ -949,4 +947,102 @@ html, body {
         padding: 4px 6px !important;
         white-space: nowrap !important;
     }
+}
+
+/* บังคับให้ถาดแสตมป์ยอมรับ Scroll แนวนอนอย่างชัดเจน */
+.stamp-picker-container {
+    position: fixed;
+    bottom: 95px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 380px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 12px 16px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    text-align: center;
+    box-sizing: border-box;
+    pointer-events: auto !important; /* ป้องกันการโดนบล็อกคลิก */
+}
+
+.picker-title {
+    font-size: 12px;
+    color: #5d4037;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.stamp-options-scroll {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 12px;
+    overflow-x: scroll !important; /* บังคับเปิด Scroll แนวนอน */
+    overflow-y: hidden !important;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: grab;
+    user-select: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x; /* อนุญาตให้เลื่อนแนวนอนบนหน้าจอสัมผัส */
+}
+
+.stamp-options-scroll:active {
+    cursor: grabbing;
+}
+
+/* ซ่อน Scrollbar ให้ดูสะอาดตา */
+.stamp-options-scroll::-webkit-scrollbar {
+    display: none;
+}
+.stamp-options-scroll {
+    scrollbar-width: none;
+}
+
+/* ป้องกันรูปโดนบีบขนาด */
+.stamp-opt {
+    height: 52px !important;
+    width: auto !important;
+    flex-shrink: 0 !important; /* สำคัญ: ห้ามรูปหดตัว */
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-drag: none;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* ✉️ แสตมป์มุมขวาบนของซองจดหมาย */
+.envelope-card {
+    position: relative;
+}
+
+.envelope-stamp-img {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    height: 38px;
+    width: auto;
+    border-radius: 3px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+    transform: rotate(2deg);
+    pointer-events: none;
+}
+
+/* 📖 แสตมป์มุมขวาบนในหน้า Scrapbook Diary */
+.scrapbook-corner-stamp {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    height: 58px;
+    width: auto;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.18));
+    transform: rotate(-3deg);
+    pointer-events: none;
+    z-index: 10;
 }

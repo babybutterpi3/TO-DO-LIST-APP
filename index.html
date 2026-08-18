@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<<!-- 1. ตัว Firebase SDK ต้องอยู่ก่อน -->
+<!-- 1. ตัว Firebase SDK ต้องอยู่ก่อน -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -95,12 +95,15 @@
 
                 <!-- ✉️ 2. ซองจดหมายรางวัล -->
                 <div class="envelope-card" id="envelope" onclick="openEnvelope()">
+                    <!-- 🌟 แท็กรูปแสตมป์บนมุมซอง -->
+                    <img class="envelope-stamp-img" src="" style="display:none;" alt="stamp">
+                    
                     <div class="envelope-flap"></div>
                     <div class="wax-seal" id="seal">💌</div>
                     <div class="letter-content" id="letter">
                         <div class="reward-title">✨ Reward For Today ✨</div>
                         <div class="reward-text" id="reward-display">
-                            🥠 "เก่งมาก! วันนี้เคลียร์ Task หมดแล้ว!"
+                            🎉 "เก่งมาก! วันนี้เคลียร์ Task หมดแล้ว!"
                         </div>
                     </div>
                 </div>
@@ -152,13 +155,17 @@
                 <!-- รูปพื้นหลังถาดผลไม้ -->
                 <img src="fruits-pack.png" class="tray-img fruits-tray-img"" alt="Fruits Pack">
 
-                <!-- ซองจดหมายก้นถาด -->
-                <div class="envelope-card envelope-fruits" id="envelope-fruits" onclick="openEnvelope()">
-                    <div class="wax-seal">💌</div>
-                    <div class="letter-content">
+                <!-- ✉️ 2. ซองจดหมายรางวัล -->
+                <div class="envelope-card" id="envelope" onclick="openEnvelope()">
+                    <!-- 🌟 แท็กรูปแสตมป์บนมุมซอง -->
+                    <img class="envelope-stamp-img" src="" style="display:none;" alt="stamp">
+                    
+                    <div class="envelope-flap"></div>
+                    <div class="wax-seal" id="seal">💌</div>
+                    <div class="letter-content" id="letter">
                         <div class="reward-title">✨ Reward For Today ✨</div>
-                        <div class="reward-text" id="reward-display-fruits">
-                            🥠 "เก่งมาก! วันนี้เคลียร์ Task หมดแล้ว!"
+                        <div class="reward-text" id="reward-display">
+                            🎉 "เก่งมาก! วันนี้เคลียร์ Task หมดแล้ว!"
                         </div>
                     </div>
                 </div>
@@ -214,17 +221,21 @@
             <!-- รูปตะกร้าปิคนิค -->
             <img src="pn-basket.png" class="tray-img picnic-basket-img" alt="Picnic Basket">
 
-            <!-- ซองจดหมายก้นถาด -->
-            <div class="envelope-card" id="envelope-picnic" onclick="openEnvelope()">
-                <div class="wax-seal">💌</div>
-                <div class="letter-content">
-                    <div class="reward-title">✨ Reward For Today ✨</div>
-                    <div class="reward-text" id="reward-display-picnic">
-                        🥠 "เก่งมาก! วันนี้เคลียร์ Task หมดแล้ว!"
+            <!-- ✉️ 2. ซองจดหมายรางวัล -->
+                <div class="envelope-card" id="envelope" onclick="openEnvelope()">
+                    <!-- 🌟 แท็กรูปแสตมป์บนมุมซอง -->
+                    <img class="envelope-stamp-img" src="" style="display:none;" alt="stamp">
+                    
+                    <div class="envelope-flap"></div>
+                    <div class="wax-seal" id="seal">💌</div>
+                    <div class="letter-content" id="letter">
+                        <div class="reward-title">✨ Reward For Today ✨</div>
+                        <div class="reward-text" id="reward-display">
+                            🎉 "เก่งมาก! วันนี้เคลียร์ Task หมดแล้ว!"
+                        </div>
                     </div>
                 </div>
-            </div>
-
+                
             <!-- ไอเทมปิคนิค 5 ชิ้น -->
             <div class="food-item item-pn-tea">
                 <div class="price-tag">☕ จิบชาร้อน</div>
@@ -280,49 +291,64 @@
     </div>
 </div>
    
-   <!-- 📖 หน้า Scrapbook Daily Planner -->
-<div id="scrapbook-page" class="screen">
-    <!-- ปุ่มควบคุมด้านบน -->
-    <div class="top-nav">
-        <button onclick="goToHome()" class="nav-btn">🏠 Themes</button>
-        <button onclick="openStreakModal()" class="nav-btn streak-btn">🗓️ Streak</button>
-    </div>
-
-    <!-- แผ่นกระดาษ Planner (ใส่ id และ onclick เพื่อให้รับการปั๊มแสตมป์) -->
-    <div id="planner-paper" class="planner-paper" onclick="stampOnPaper(event)">
-        <!-- ส่วนหัวแสดงชื่อเดือนฟอนต์ตวัด + วันที่ -->
-        <div class="planner-header">
-            <h1 id="planner-month-title" class="script-title">August Log</h1>
-            <div class="date-tag">Date ( <span id="planner-date-num">13/8</span> )</div>
+  <!-- 📖 หน้า Scrapbook Daily Planner -->
+    <div id="scrapbook-page" class="screen">
+        <!-- ปุ่มควบคุมด้านบน -->
+        <div class="top-nav">
+            <button onclick="goToHome()" class="nav-btn">🏠 Themes</button>
+            <button onclick="openStreakModal()" class="nav-btn streak-btn">🗓️ Streak</button>
         </div>
 
-        <!-- พื้นที่วาง To-Do แบบสะเปะสะปะ -->
-        <div class="planner-body" id="planner-body">
-            <!-- รายการ To-Do + ป้ายสก็อตเทปเหลืองจะโดนสร้างด้วย JS ตรงนี้ -->
+        <!-- แผ่นกระดาษ Planner -->
+        <div id="planner-paper" class="planner-paper" onclick="stampOnPaper(event)">
+            <div class="planner-header">
+                <h1 id="planner-month-title" class="script-title">August Log</h1>
+                <div class="date-tag">Date ( <span id="planner-date-num">13/8</span> )</div>
+            </div>
+            <div class="planner-body" id="planner-body"></div>
         </div>
-    </div>
-        
-    <!-- 🎨 🌟 ถาดแสตมป์ด้านล่าง (Stamp Palette) -->
-    <div class="stamp-palette">
-        <div class="palette-label">🏷️ Pick a stamp:</div>
-        <div class="stamp-list">
-            <!-- อิโมจิพื้นฐาน -->
-            <button class="stamp-btn" onclick="selectStamp('💖', this)">💖</button>
-            <button class="stamp-btn" onclick="selectStamp('⭐', this)">⭐</button>
-            <button class="stamp-btn" onclick="selectStamp('✨', this)">✨</button>
-            <button class="stamp-btn" onclick="selectStamp('☁️', this)">☁️</button>
-            <button class="stamp-btn" onclick="selectStamp('🎀', this)">🎀</button>
-            <button class="stamp-btn" onclick="selectStamp('🌼', this)">🌼</button>
-            <button class="stamp-btn" onclick="selectStamp('🥐', this)">🥐</button>
             
-            <!-- ตรายางข้อความวินเทจ -->
-            <button class="stamp-btn text-stamp-btn" onclick="selectStamp('APPROVED ✔️', this)">APPROVED ✔️</button>
-            <button class="stamp-btn text-stamp-btn" onclick="selectStamp('COZY DAY 🍵', this)">COZY DAY 🍵</button>
-            <button class="stamp-btn text-stamp-btn" onclick="selectStamp('TIME_NOW', this)">⏰ Current Time</button>
+        <!-- 🎨 ถาดแสตมป์ด้านล่าง -->
+        <div class="stamp-palette">
+            <div class="palette-label">🏷️ Pick a stamp:</div>
+            <div class="stamp-list">
+                <button class="stamp-btn" onclick="selectStamp('💖', this)">💖</button>
+                <button class="stamp-btn" onclick="selectStamp('⭐', this)">⭐</button>
+                <button class="stamp-btn" onclick="selectStamp('✨', this)">✨</button>
+                <button class="stamp-btn" onclick="selectStamp('☁️', this)">☁️</button>
+                <button class="stamp-btn" onclick="selectStamp('🎀', this)">🎀</button>
+                <button class="stamp-btn" onclick="selectStamp('🌼', this)">🌼</button>
+                <button class="stamp-btn" onclick="selectStamp('🥐', this)">🥐</button>
+                
+                <button class="stamp-btn text-stamp-btn" onclick="selectStamp('APPROVED ✔️', this)">APPROVED ✔️</button>
+                <button class="stamp-btn text-stamp-btn" onclick="selectStamp('COZY DAY 🍵', this)">COZY DAY 🍵</button>
+                <button class="stamp-btn text-stamp-btn" onclick="selectStamp('TIME_NOW', this)">⏰ Current Time</button>
+            </div>
+            <button class="clear-stamps-btn" onclick="clearDayStamps()">🧹 Clear Stamps</button>
         </div>
-        <button class="clear-stamps-btn" onclick="clearDayStamps()">🧹 Clear Stamps</button>
-    </div>
-</div>
+    </div> <!-- 🌟 ปิด scrapbook-page ให้เรียบร้อยตรงนี้ -->
 
+    <!-- 💌 ถาดเลือกแสตมป์ส่วนกลาง อยู่นอกทุก screen -->
+    <div id="reward-stamp-picker" class="stamp-picker-container" style="display: none;">
+        <p class="picker-title">✨ pick a stamp for your letter ✨</p>
+        <div class="stamp-options-scroll">
+            <img class="stamp-opt" src="st-alice.png" onclick="chooseSealStamp('st-alice.png', this)">
+            <img class="stamp-opt" src="st-angel.png" onclick="chooseSealStamp('st-angel.png', this)">
+            <img class="stamp-opt" src="st-astronomy.png" onclick="chooseSealStamp('st-astronomy.png', this)">
+            <img class="stamp-opt" src="st-cat.png" onclick="chooseSealStamp('st-cat.png', this)">
+            <img class="stamp-opt" src="st-fungi.png" onclick="chooseSealStamp('st-fungi.png', this)">
+            <img class="stamp-opt" src="st-hellas.png" onclick="chooseSealStamp('st-hellas.png', this)">
+            <img class="stamp-opt" src="st-horses.png" onclick="chooseSealStamp('st-horses.png', this)">
+            <img class="stamp-opt" src="st-italia.png" onclick="chooseSealStamp('st-italia.png', this)">
+            <img class="stamp-opt" src="st-jester.png" onclick="chooseSealStamp('st-jester.png', this)">
+            <img class="stamp-opt" src="st-korea.png" onclick="chooseSealStamp('st-korea.png', this)">
+            <img class="stamp-opt" src="st-laos.png" onclick="chooseSealStamp('st-laos.png', this)">
+            <img class="stamp-opt" src="st-mongol.png" onclick="chooseSealStamp('st-mongol.png', this)">
+            <img class="stamp-opt" src="st-skull.png" onclick="chooseSealStamp('st-skull.png', this)">
+            <img class="stamp-opt" src="st-smoke.png" onclick="chooseSealStamp('st-smoke.png', this)">
+            <img class="stamp-opt" src="st-vaticana.png" onclick="chooseSealStamp('st-vaticana.png', this)">
+        </div>
+    </div>
+                                                      
 </body>
 </html>

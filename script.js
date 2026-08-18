@@ -26,19 +26,19 @@ let currentIndex = 0;
 let isRewardMode = false;
 let selectedStamp = null;
 let currentViewingDay = null; 
+let currentSealedStamp = null; // เริ่มต้นยังไม่เลือกแสตมป์
 
 // โหลดข้อมูลจากเครื่องก่อน (เผื่อเน็ตหลุด)
 let checkedDays = JSON.parse(localStorage.getItem("myStreakDays")) || [];
 let scrapbookHistory = JSON.parse(localStorage.getItem("myScrapbookHistory")) || {};
 
-// 🔄 รับข้อมูล Real-time จาก Cloud (เปิดคอมหรือมือถือ ค่าจะเปลี่ยนตามทันที)
+// 🔄 รับข้อมูล Real-time จาก Cloud
 docRef.onSnapshot((doc) => {
     if (doc.exists) {
         const cloudData = doc.data();
         
-       // 1. อัปเดต Streak
+        // 1. อัปเดต Streak
         if (cloudData.streakDays) {
-            // 🌟 แปลงทุกค่าให้เป็น Number ชัวร์ๆ ป้องกันประเภทข้อมูลเพี้ยน
             checkedDays = cloudData.streakDays.map(d => Number(d));
             localStorage.setItem("myStreakDays", JSON.stringify(checkedDays));
             
@@ -57,7 +57,6 @@ docRef.onSnapshot((doc) => {
         }
     }
 });
-
 
 // ================= 🏠 3. ระบบนำทาง & ฟังก์ชันทั่วไป =================
 function selectTheme(themeName) {
@@ -110,6 +109,7 @@ function addTodo() {
     let allFoods = activeScreen.querySelectorAll(".food-item");
 
     if (!isRewardMode) {
+        // เพิ่ม To-Do ทีละช่อง
         if (currentIndex < allPriceTags.length) {
             allPriceTags[currentIndex].innerText = text;
             let currentFood = allFoods[currentIndex];
@@ -121,20 +121,40 @@ function addTodo() {
             currentIndex++;
         }
         
+        // เมื่อพิมพ์ครบทุกช่อง ➡️ สลับเข้าสู่โหมด Reward & เลือกแสตมป์
         if (currentIndex >= allFoods.length) {
             isRewardMode = true;
+            input.value = ""; 
+            
             if (currentTheme === 'breakfast') input.placeholder = "tell yourself a sweet reward... 🥐";
             else if (currentTheme === 'fruits') input.placeholder = "manifest your daily wins bestie... 🔮";
             else if (currentTheme === 'picnic') input.placeholder = "whisper a secret reward for today... 🤫";
             
+            // แสดงถาดเลือกแสตมป์
+            let picker = document.getElementById("reward-stamp-picker");
+            if (picker) {
+                picker.style.display = "block";
+                document.querySelectorAll(".stamp-opt").forEach(img => img.classList.remove("selected"));
+            }
+
             btn.innerText = "seal it! 💌";
             btn.style.background = "linear-gradient(135deg, #a1887f, #5d4037)";
+            return;
         }
+
     } else {
         // 🌟 โหมดกด Seal It!
         let rewardDisplay = activeScreen.querySelector(".reward-text");
         if (rewardDisplay) rewardDisplay.innerText = "💌 " + text;
         
+        // แสดงแสตมป์บนซองจดหมาย
+        let envStamp = activeScreen.querySelector(".envelope-stamp-img");
+        if (envStamp && currentSealedStamp) {
+            envStamp.src = currentSealedStamp;
+            envStamp.style.display = "block";
+        }
+
+        // แสดงแอนิเมชันซองจดหมาย
         let envelope = activeScreen.querySelector(".envelope-card");
         if (envelope) {
             envelope.style.display = "flex";
@@ -142,7 +162,11 @@ function addTodo() {
             envelope.style.transform = "translate(-50%, -50%) scale(1)";
         }
         
-       // 1. บันทึกเช็กอิน Streak & ส่ง Cloud
+        // ซ่อนถาดเลือกแสตมป์
+        let picker = document.getElementById("reward-stamp-picker");
+        if (picker) picker.style.display = "none";
+
+        // 1. บันทึกเช็กอิน Streak
         markTodayComplete();
 
         // 2. รวบรวม To-Do ทั้งหมด
@@ -153,8 +177,8 @@ function addTodo() {
             }
         });
 
-        // 3. บันทึกลง Scrapbook History & ซิงค์ขึ้น Cloud
-        saveScrapbookData(todayTasks, text);
+        // 3. บันทึกลง Scrapbook History พร้อมแสตมป์ที่เลือก
+        saveScrapbookData(todayTasks, text, currentSealedStamp || "st-cat.png");
 
         isRewardMode = false;
         currentIndex = 0;
@@ -203,8 +227,12 @@ function resetTray() {
         envelope.classList.remove("open");
     }
 
+    let picker = document.getElementById("reward-stamp-picker");
+    if (picker) picker.style.display = "none";
+
     currentIndex = 0;
     isRewardMode = false;
+    currentSealedStamp = null;
     let input = activeScreen.querySelector("input[type='text']");
     let btn = activeScreen.querySelector(".cute-btn");
     let navBtn = activeScreen.querySelector(".nav-btn");
@@ -239,8 +267,48 @@ document.addEventListener("DOMContentLoaded", function() {
             setTimeout(() => { food.style.display = "none"; }, 300);
         }
     });
-});
 
+    // 🖱️ ระบบเลื่อนถาดแสตมป์ด้วย Wheel และ Drag
+    const initStampScroll = () => {
+        const stampScroll = document.querySelector(".stamp-options-scroll");
+        if (!stampScroll) return;
+
+        // เลื่อนด้วยลูกกลิ้งเมาส์
+        stampScroll.addEventListener("wheel", function(e) {
+            if (e.deltaY !== 0 || e.deltaX !== 0) {
+                e.preventDefault();
+                stampScroll.scrollLeft += (e.deltaY || e.deltaX);
+            }
+        }, { passive: false });
+
+        // คลิกเมาส์ค้างแล้วลาก (Drag to Scroll)
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        stampScroll.addEventListener('mousedown', (e) => {
+            isDown = true;
+            stampScroll.style.cursor = 'grabbing';
+            startX = e.pageX - stampScroll.offsetLeft;
+            scrollLeft = stampScroll.scrollLeft;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDown = false;
+            if (stampScroll) stampScroll.style.cursor = 'grab';
+        });
+
+        stampScroll.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - stampScroll.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            stampScroll.scrollLeft = scrollLeft - walk;
+        });
+    };
+
+    initStampScroll();
+});
 
 // ================= 🗓️ 5. ระบบ STREAK =================
 function openStreakModal() {
@@ -280,7 +348,6 @@ function renderCalendar() {
         };
         dayBox.style.cursor = "pointer";
         
-        // 🌟 ตรวจสอบทั้งแบบตัวเลขและข้อความ
         let isChecked = checkedDays.some(d => Number(d) === i);
 
         if (isChecked) {
@@ -293,9 +360,7 @@ function renderCalendar() {
         grid.appendChild(dayBox);
     }
 
-    // 🌟 อัปเดตตัวเลข Streak ทุกจุด
     let currentStreakCount = checkedDays.length;
-    
     let streakNum = document.getElementById("streak-num");
     if (streakNum) streakNum.innerText = currentStreakCount;
 
@@ -312,39 +377,31 @@ function markTodayComplete() {
     if (!checkedDays.includes(today)) {
         checkedDays.push(today);
     }
-    // บันทึกลงเครื่อง
     localStorage.setItem("myStreakDays", JSON.stringify(checkedDays));
+    syncToCloud({ streakDays: checkedDays });
     
-    // ☁️ ส่ง streakDays ขึ้น Firebase ทันที!
-    syncToCloud({
-        streakDays: checkedDays
-    });
-    
-    // สั่งวาดปฏิทินใหม่ทันที
     if (typeof renderCalendar === "function") {
         renderCalendar();
     }
 }
 
-
 // ================= 📖 6. ระบบ SCRAPBOOK & STAMPS =================
-function saveScrapbookData(tasks, reward) {
+function saveScrapbookData(tasks, reward, sealedStamp) {
     let todayKey = new Date().getDate();
-    
-    // ดึงแสตมป์เก่ามาด้วย จะได้ไม่โดนทับหายไป
-    let existingStamps = scrapbookHistory[todayKey] && scrapbookHistory[todayKey].stamps ? scrapbookHistory[todayKey].stamps : [];
+    let existingStamps = scrapbookHistory[todayKey]?.stamps || [];
     
     scrapbookHistory[todayKey] = {
         tasks: tasks,
         reward: reward,
-        stamps: existingStamps
+        stamps: existingStamps,
+        sealedStamp: sealedStamp || "st-cat.png"
     };
     localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
-    syncToCloud({ scrapbookHistory: scrapbookHistory }); // ☁️ ซิงค์ขึ้น Cloud
+    syncToCloud({ scrapbookHistory: scrapbookHistory });
 }
 
 function renderScrapbookPage(dayNum) {
-    currentViewingDay = dayNum; // บันทึกว่าเปิดวันไหนอยู่
+    currentViewingDay = dayNum;
     
     let now = new Date();
     let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -355,14 +412,15 @@ function renderScrapbookPage(dayNum) {
     if (monthTitle) monthTitle.innerText = monthNames[now.getMonth()] + " Log";
     if (dateNum) dateNum.innerText = dayNum + "/" + (now.getMonth() + 1);
 
-    // ล้างกระดาษ (ลบ To-Do และ แสตมป์เก่าทิ้งก่อนวาดใหม่)
     let body = document.getElementById("planner-body");
+    let paper = document.getElementById("planner-paper");
     if (body) body.innerHTML = "";
     document.querySelectorAll(".stamped-item").forEach(item => item.remove());
+    document.querySelectorAll(".scrapbook-corner-stamp").forEach(el => el.remove());
 
     let data = scrapbookHistory[dayNum];
     
-    // 1. วาด To-Do (Tape Tags)
+    // 1. วาด To-Do
     if (data && data.tasks && data.tasks.length > 0) {
         let topPositions = [5, 23, 42, 60]; 
         
@@ -396,9 +454,17 @@ function renderScrapbookPage(dayNum) {
         if (body) body.innerHTML = '<div style="text-align:center; padding-top:50%; color:#a1887f; font-size:12px; line-height:1.5;">today\'s side-quests<br> haven\'t started yet! 🍃</div>';
     }
 
-    // 2. วาดแสตมป์ที่เคยปั๊มไว้
+    // 2. วาดแสตมป์ที่เคยกดปั๊มเอง
     if (data && data.stamps && Array.isArray(data.stamps)) {
         data.stamps.forEach(s => drawSingleStamp(s));
+    }
+
+    // 3. วาดแสตมป์ประจำวันตรงมุมขวาบน
+    if (data && data.sealedStamp && paper) {
+        let cornerStamp = document.createElement("img");
+        cornerStamp.src = data.sealedStamp;
+        cornerStamp.classList.add("scrapbook-corner-stamp");
+        paper.appendChild(cornerStamp);
     }
 }
 
@@ -472,8 +538,7 @@ function stampOnPaper(event) {
 
     scrapbookHistory[currentViewingDay].stamps.push(stampData);
     localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
-    
-    syncToCloud({ scrapbookHistory: scrapbookHistory }); // ☁️ ซิงค์ขึ้น Cloud ทันที
+    syncToCloud({ scrapbookHistory: scrapbookHistory });
 
     drawSingleStamp(stampData);
 }
@@ -498,8 +563,23 @@ function clearDayStamps() {
     
     scrapbookHistory[currentViewingDay].stamps = [];
     localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
-    
-    syncToCloud({ scrapbookHistory: scrapbookHistory }); // ☁️ ลบใน Cloud ด้วย
+    syncToCloud({ scrapbookHistory: scrapbookHistory });
 
     document.querySelectorAll(".stamped-item").forEach(item => item.remove());
+}
+
+function chooseSealStamp(stampSrc, element) {
+    currentSealedStamp = stampSrc;
+    document.querySelectorAll(".stamp-opt").forEach(img => img.classList.remove("selected"));
+    if (element) element.classList.add("selected");
+
+    // อัปเดตรูปแสตมป์บนซองของหน้าที่กำลังเปิดอยู่
+    let activeScreen = document.querySelector(".screen.active");
+    if (activeScreen) {
+        let envStamp = activeScreen.querySelector(".envelope-stamp-img");
+        if (envStamp) {
+            envStamp.src = stampSrc;
+            envStamp.style.display = "block";
+        }
+    }
 }

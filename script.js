@@ -94,6 +94,49 @@ function goToHome() {
 }
 
 // ================= ✍️ 4. ระบบ TO-DO & SEAL IT =================
+// 💌 1. เมื่อคลิกเลือกแสตมป์ ➡️ แสตมป์จะไปติดที่มุมซองให้ดูทันที (ไม่ปิดเอง)
+function chooseSealStamp(stampSrc, element) {
+    currentSealedStamp = stampSrc;
+    document.querySelectorAll(".stamp-opt").forEach(img => img.classList.remove("selected"));
+    if (element) element.classList.add("selected");
+
+    let activeScreen = document.querySelector(".screen.active");
+    if (!activeScreen) return;
+
+    let envStamp = activeScreen.querySelector(".envelope-stamp-img");
+    if (envStamp) {
+        envStamp.src = stampSrc;
+        envStamp.style.display = "block";
+    }
+}
+
+// ✨ 2. ฟังก์ชันกดยืนยันแสตมป์ ➡️ ปิดถาด แล้วเลื่อนซองลงไปด้านล่าง
+function finishSealing() {
+    let activeScreen = document.querySelector(".screen.active");
+    if (!activeScreen) return;
+
+    // ย้ายซองจดหมายลงไปที่ตำแหน่งด้านล่างของถาด
+    let envelope = activeScreen.querySelector(".envelope-card");
+    if (envelope) {
+        envelope.classList.add("settled");
+    }
+
+    // ซ่อนถาดเลือกแสตมป์
+    let picker = document.getElementById("reward-stamp-picker");
+    if (picker) {
+        picker.style.display = "none";
+    }
+
+    // บันทึกรูปลง Scrapbook ประจำวัน
+    let todayKey = new Date().getDate();
+    if (scrapbookHistory[todayKey]) {
+        scrapbookHistory[todayKey].sealedStamp = currentSealedStamp || "st-cat.png";
+        localStorage.setItem("myScrapbookHistory", JSON.stringify(scrapbookHistory));
+        syncToCloud({ scrapbookHistory: scrapbookHistory });
+    }
+}
+
+// ✍️ 3. ระบบ To-Do & Seal It
 function addTodo() {
     let activeScreen = document.querySelector(".screen.active");
     if (!activeScreen) return;
@@ -107,9 +150,17 @@ function addTodo() {
 
     let allPriceTags = activeScreen.querySelectorAll(".price-tag");
     let allFoods = activeScreen.querySelectorAll(".food-item");
+    let envelope = activeScreen.querySelector(".envelope-card");
 
     if (!isRewardMode) {
-        // เพิ่ม To-Do ทีละช่อง
+        // ซ่อนซองเก่าถ้าเริ่มเควสต์ใหม่
+        if (currentIndex === 0 && envelope) {
+            envelope.style.display = "none";
+            envelope.style.opacity = "0";
+            envelope.classList.remove("settled", "open");
+        }
+
+        // วางอาหารทีละชิ้น
         if (currentIndex < allPriceTags.length) {
             allPriceTags[currentIndex].innerText = text;
             let currentFood = allFoods[currentIndex];
@@ -121,55 +172,56 @@ function addTodo() {
             currentIndex++;
         }
         
-        // เมื่อพิมพ์ครบทุกช่อง ➡️ สลับเข้าสู่โหมด Reward & เลือกแสตมป์
+        input.value = "";
+
+        // ใส่ครบทุกชิ้น ➡️ เปลี่ยนเป็นช่องพิมพ์ Reward
         if (currentIndex >= allFoods.length) {
             isRewardMode = true;
-            input.value = ""; 
             
             if (currentTheme === 'breakfast') input.placeholder = "tell yourself a sweet reward... 🥐";
             else if (currentTheme === 'fruits') input.placeholder = "manifest your daily wins bestie... 🔮";
             else if (currentTheme === 'picnic') input.placeholder = "whisper a secret reward for today... 🤫";
             
-            // แสดงถาดเลือกแสตมป์
-            let picker = document.getElementById("reward-stamp-picker");
-            if (picker) {
-                picker.style.display = "block";
-                document.querySelectorAll(".stamp-opt").forEach(img => img.classList.remove("selected"));
-            }
-
             btn.innerText = "seal it! 💌";
             btn.style.background = "linear-gradient(135deg, #a1887f, #5d4037)";
             return;
         }
 
     } else {
-        // 🌟 โหมดกด Seal It!
+        // 🌟 โหมดกด Seal It! ➡️ เด้งซองขนาดเต็มถาด + เปิดถาดแสตมป์
         let rewardDisplay = activeScreen.querySelector(".reward-text");
         if (rewardDisplay) rewardDisplay.innerText = "💌 " + text;
-        
-        // แสดงแสตมป์บนซองจดหมาย
-        let envStamp = activeScreen.querySelector(".envelope-stamp-img");
-        if (envStamp && currentSealedStamp) {
-            envStamp.src = currentSealedStamp;
-            envStamp.style.display = "block";
-        }
 
-        // แสดงแอนิเมชันซองจดหมาย
-        let envelope = activeScreen.querySelector(".envelope-card");
         if (envelope) {
+            envelope.classList.remove("settled", "open");
             envelope.style.display = "flex";
             envelope.style.opacity = "1";
             envelope.style.transform = "translate(-50%, -50%) scale(1)";
         }
-        
-        // ซ่อนถาดเลือกแสตมป์
+
+        // ตั้งค่าแสตมป์เริ่มต้นเป็นแมว ถ้ายังไม่ได้เลือก
+        if (!currentSealedStamp) currentSealedStamp = "st-cat.png";
+
+        // แสดงรูปแสตมป์บนซองทันที
+        let envStamp = activeScreen.querySelector(".envelope-stamp-img");
+        if (envStamp) {
+            envStamp.src = currentSealedStamp;
+            envStamp.style.display = "block";
+        }
+
+        // เปิดถาดเลือกแสตมป์
         let picker = document.getElementById("reward-stamp-picker");
-        if (picker) picker.style.display = "none";
+        if (picker) {
+            picker.style.display = "block";
+            document.querySelectorAll(".stamp-opt").forEach(img => {
+                if (img.getAttribute("src") === currentSealedStamp) {
+                    img.classList.add("selected");
+                } else {
+                    img.classList.remove("selected");
+                }
+            });
+        }
 
-        // 1. บันทึกเช็กอิน Streak
-        markTodayComplete();
-
-        // 2. รวบรวม To-Do ทั้งหมด
         let todayTasks = [];
         allPriceTags.forEach(tag => {
             if (tag.innerText && tag.innerText !== "") {
@@ -177,21 +229,20 @@ function addTodo() {
             }
         });
 
-        // 3. บันทึกลง Scrapbook History พร้อมแสตมป์ที่เลือก
-        saveScrapbookData(todayTasks, text, currentSealedStamp || "st-cat.png");
+        markTodayComplete();
+        saveScrapbookData(todayTasks, text, currentSealedStamp);
 
         isRewardMode = false;
         currentIndex = 0;
-        input.placeholder = "✨ เพิ่มรายการ To-Do วันนี้...";
+        input.value = "";
+        input.placeholder = "✨ what are you like to do today?";
         if (btn) {
-            let emoji = (currentTheme === 'fruits') ? '🍎' : '🍳';
-            btn.innerText = "เพิ่ม " + emoji;
-            btn.style.background = "linear-gradient(135deg, #ffb74d, #f57c00)";
+            let emoji = (currentTheme === 'fruits') ? '🍎' : (currentTheme === 'picnic' ? '🧺' : '🍳');
+            btn.innerText = "add " + emoji;
+            btn.style.background = "rgba(255, 255, 255, 0.6)";
         }
     }
-    input.value = "";
 }
-
 function openEnvelope() {
     let activeScreen = document.querySelector(".screen.active");
     if (!activeScreen) return;
@@ -566,20 +617,4 @@ function clearDayStamps() {
     syncToCloud({ scrapbookHistory: scrapbookHistory });
 
     document.querySelectorAll(".stamped-item").forEach(item => item.remove());
-}
-
-function chooseSealStamp(stampSrc, element) {
-    currentSealedStamp = stampSrc;
-    document.querySelectorAll(".stamp-opt").forEach(img => img.classList.remove("selected"));
-    if (element) element.classList.add("selected");
-
-    // อัปเดตรูปแสตมป์บนซองของหน้าที่กำลังเปิดอยู่
-    let activeScreen = document.querySelector(".screen.active");
-    if (activeScreen) {
-        let envStamp = activeScreen.querySelector(".envelope-stamp-img");
-        if (envStamp) {
-            envStamp.src = stampSrc;
-            envStamp.style.display = "block";
-        }
-    }
 }

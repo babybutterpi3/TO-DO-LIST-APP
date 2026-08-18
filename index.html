@@ -328,9 +328,10 @@
         </div>
     </div> <!-- 🌟 ปิด scrapbook-page ให้เรียบร้อยตรงนี้ -->
 
-    <!-- 💌 ถาดเลือกแสตมป์ส่วนกลาง อยู่นอกทุก screen -->
+    <!-- 💌 ถาดเลือกแสตมป์ส่วนกลาง -->
     <div id="reward-stamp-picker" class="stamp-picker-container" style="display: none;">
-        <p class="picker-title">✨ pick a stamp for your letter ✨</p>
+        <p class="picker-title">✨ choose your favorite stamp ✨</p>
+        
         <div class="stamp-options-scroll">
             <img class="stamp-opt" src="st-alice.png" onclick="chooseSealStamp('st-alice.png', this)">
             <img class="stamp-opt" src="st-angel.png" onclick="chooseSealStamp('st-angel.png', this)">
@@ -348,6 +349,9 @@
             <img class="stamp-opt" src="st-smoke.png" onclick="chooseSealStamp('st-smoke.png', this)">
             <img class="stamp-opt" src="st-vaticana.png" onclick="chooseSealStamp('st-vaticana.png', this)">
         </div>
+
+        <!-- 🌟 ปุ่มกดยืนยันหลังจากเลือกแสตมป์เสร็จแล้ว -->
+        <button type="button" class="confirm-stamp-btn" onclick="finishSealing()">done & seal! ✨</button>
     </div>
                                                       
 </body>

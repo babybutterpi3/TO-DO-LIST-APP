@@ -9,7 +9,6 @@
     font-style: normal;
 }
 
-
 /* ==================================================
    📱 1. GLOBAL & BACKGROUND (แก้ Scrollbar ล้นจอ)
    ================================================== */
@@ -19,11 +18,11 @@ html, body {
     font-family: 'Kanit', sans-serif;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* ไม่ให้หน้าหลักล้น */
+    overflow: hidden;
     box-sizing: border-box;
+    background-color: #f7f3ee;
 }
 
-/* 🌟 กล่องหลักล็อกหน้าจอให้ขยายเต็ม 100% ของจอภาพ */
 .phone-screen {
     position: relative;
     width: 100vw;
@@ -35,7 +34,6 @@ html, body {
     border: none !important;
 }
 
-/* สวิตช์ซ่อน/โชว์หน้า */
 .screen {
     position: absolute;
     top: 0;
@@ -57,9 +55,8 @@ html, body {
     z-index: 10;
 }
 
-
 /* ==================================================
-   🏠 2. HOME SCREEN & GLASS CARDS (หน้าแรก + การ์ดกระจกฝ้าตรงกลาง)
+   🏠 2. HOME SCREEN & GLASS CARDS
    ================================================== */
 #home-screen, #home-page {
     position: fixed !important;
@@ -75,9 +72,8 @@ html, body {
     box-sizing: border-box !important;
 }
 
-/* ✅ ให้รูปวิวสวนแสดงเฉพาะหน้า Home เท่านั้น */
 #home-page {
-    background-image: url('bg-main.jpg'); /* หรือชื่อไฟล์รูปสวนของน้อง */
+    background-image: url('bg-main.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -94,7 +90,6 @@ html, body {
     text-align: center !important;
 }
 
-/* ข้อความหัวข้อสว่างสดใส มีเงารองรับ */
 .home-container h1, .app-title, .welcome-header h2 {
     font-family: 'Amoresa', cursive;
     font-size: 42px !important;
@@ -110,7 +105,6 @@ html, body {
     margin: 0 0 20px 0;
 }
 
-/* 📅 ปุ่มเปิด Streak ปฏิทินในหน้า Home */
 .home-streak-btn {
     margin-top: 15px;
     padding: 10px 20px;
@@ -136,11 +130,6 @@ html, body {
     border-color: #8d6e63;
 }
 
-.home-streak-btn:active {
-    transform: scale(0.95);
-}
-
-/* แผงเรียงการ์ดธีมแนวนอนตรงกลาง */
 .theme-grid, .theme-list, .theme-options {
     display: flex !important;
     flex-direction: row !important;
@@ -153,7 +142,6 @@ html, body {
     margin-top: 10px !important;
 }
 
-/* ตัวการ์ดกระจกฝ้า Glassmorphic */
 .theme-card {
     background: rgba(255, 255, 255, 0.45) !important;
     backdrop-filter: blur(16px) saturate(180%) !important;
@@ -176,16 +164,12 @@ html, body {
     background: rgba(255, 255, 255, 0.65) !important;
 }
 
-.theme-card:active {
-    transform: scale(0.96);
-}
-
 .theme-card.disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-.theme-icon, .theme-img {
+.theme-icon {
     font-size: 28px;
     width: 60px;
     height: 60px;
@@ -193,26 +177,24 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    object-fit: contain;
     margin-bottom: 10px;
 }
 
-.theme-card h3, .theme-info h3 {
+.theme-card h3 {
     margin: 5px 0 3px 0;
     font-size: 16px !important;
     color: #2b1b17 !important;
     font-weight: 600 !important;
 }
 
-.theme-card p, .theme-info p {
+.theme-card p {
     margin: 0;
     font-size: 12px !important;
     color: #4a3b32 !important;
 }
 
-
 /* ==================================================
-   🖼️ 3. THEME BACKGROUNDS (รูปพื้นหลังย่อยของแต่ละธีม)
+   🖼️ 3. THEME BACKGROUNDS
    ================================================== */
 #tray-page, #fruits-page, #picnic-page {
     position: relative;
@@ -252,14 +234,13 @@ html, body {
     z-index: 0;
 }
 
-
 /* ==================================================
-   🍱 4. TRAY & ITEMS (ถาดอาหารและพิกัดของแต่ละธีม)
+   🍱 4. TRAY & ITEMS
    ================================================== */
 .tray-container {
     position: relative;
-    width: 75%;
-    max-width: 300px;
+    width: 78%;
+    max-width: 320px;
     margin: auto 0;
     display: flex;
     justify-content: center;
@@ -282,7 +263,6 @@ html, body {
     height: auto;
     display: block;
     margin: 0 auto;
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
 }
 
 #picnic-page .tray-container {
@@ -315,29 +295,28 @@ html, body {
     white-space: nowrap;
 }
 
-/* 📌 พิกัดอาหาร: Breakfast */
+/* พิกัด Breakfast */
 .item-toast      { top: 8%; left: 6%; width: 48%; }
 .item-lemonade   { top: 10%; right: 2%; width: 48%; }
 .item-strawberry { bottom: 15%; left: 6%; width: 46%; }
 .item-yogurt     { bottom: 12%; right: 2%; width: 44%; }
 
-/* 📌 พิกัดผลไม้: Fresh Fruits */
+/* พิกัด Fruits */
 .item-banana { top: 6%; left: 8%; width: 44%; }
 .item-grape  { top: 10%; right: 8%; width: 40%; }
 .item-apple  { top: 36%; left: 10%; width: 36%; }
 .item-mango  { top: 38%; right: 12%; width: 35%; }
 .item-pear   { bottom: 10%; left: 22%; width: 46%; }
 
-/* 📌 พิกัดไอเทม: Picnic Basket */
+/* พิกัด Picnic */
 .item-pn-tea     { top: 5%; left: 8%; width: 38%; }
 .item-pn-camera  { top: 2%; right: 8%; width: 42%; }
 .item-pn-cookies { top: 22%; right: 10%; width: 44%; }
 .item-pn-cherry  { bottom: 15%; left: 5%; width: 50%; }
 .item-pn-drink   { bottom: 5%; right: 15%; width: 34%; }
 
-
 /* ==================================================
-   📍 5. BOTTOM BAR & BUTTONS (แผงพิมพ์ & ปุ่มกด)
+   📍 5. BOTTOM BAR & BUTTONS
    ================================================== */
 .top-nav {
     position: absolute;
@@ -393,98 +372,275 @@ html, body {
     padding: 6px 14px;
 }
 
-.cute-btn:active { transform: scale(0.92); }
-.cute-btn:hover, .nav-btn:hover {
-    background: rgba(255, 255, 255, 0.85) !important;
-    transform: translateY(-2px);
+/* ==================================================
+   💌 6. ENVELOPE CARD (ซองจดหมายขนาดใหญ่ชัดเจน)
+   ================================================== */
+.envelope-card {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+    width: 90% !important; /* กว้างเกือบเต็มถาด */
+    height: 145px !important;
+    background: #fdfaf5 !important;
+    border: 2px solid #ecdcc9 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3) !important;
+    display: none;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    cursor: pointer;
+    overflow: visible !important;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 150 !important;
+    opacity: 0;
+    box-sizing: border-box !important;
+    padding: 15px !important;
 }
 
+/* เมื่อกดยืนยันแล้ว ให้ย้ายไปนอนที่ก้นถาด */
+.envelope-card.settled {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(0.85) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    z-index: 5 !important;
+}
+
+/* รูปแสตมป์บนมุมซองจดหมาย */
+.envelope-stamp-img {
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    height: 48px !important;
+    width: auto !important;
+    border-radius: 3px !important;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)) !important;
+    transform: rotate(3deg) !important;
+    pointer-events: none !important;
+    z-index: 160 !important;
+    display: block;
+}
+
+.reward-title {
+    font-size: 12px;
+    color: #8d6e63;
+    font-weight: bold;
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.reward-text {
+    font-size: 14px;
+    color: #3e2723;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.4;
+    padding: 0 15px;
+}
+
+.wax-seal {
+    position: absolute;
+    width: 42px; height: 42px;
+    background: #902c2c;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 18px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 3;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+.letter-content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+    text-align: center;
+    padding: 10px;
+}
+
+.envelope-card.open { height: 165px !important; background: #fffdf0 !important; }
+.envelope-card.open .wax-seal { opacity: 0; transform: scale(0); }
+.envelope-card.open .letter-content { opacity: 1; transform: translateY(0); }
 
 /* ==================================================
-   📖 6. SCRAPBOOK DAILY PLANNER (หน้าแพลนเนอร์กระดาษ)
+   💌 7. STAMP PICKER (ถาดเลือกแสตมป์ลอยกลางจอ)
+   ================================================== */
+.stamp-picker-container {
+    position: fixed !important;
+    bottom: 130px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 90% !important;
+    max-width: 380px !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    padding: 12px 14px !important;
+    border-radius: 24px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
+    z-index: 300 !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+}
+
+.picker-title {
+    font-size: 12px;
+    color: #5d4037;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.stamp-options-scroll {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 12px;
+    overflow-x: scroll !important;
+    overflow-y: hidden !important;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: grab;
+    user-select: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.stamp-options-scroll::-webkit-scrollbar { display: none; }
+.stamp-options-scroll { scrollbar-width: none; }
+
+.stamp-opt {
+    height: 54px !important;
+    width: auto !important;
+    flex-shrink: 0 !important;
+    border-radius: 4px;
+    cursor: pointer;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    transition: transform 0.2s ease;
+}
+
+.stamp-opt:hover, .stamp-opt.selected {
+    transform: scale(1.1);
+    outline: 2px solid #8d6e63;
+}
+
+.confirm-stamp-btn {
+    margin-top: 10px;
+    background: linear-gradient(135deg, #8d6e63, #5d4037);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 6px 18px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(93, 64, 55, 0.3);
+}
+
+/* ==================================================
+   📖 8. SCRAPBOOK PLANNER & STREAK MODAL (ตัวสมบูรณ์ ทรงสลิมเรียวยาว)
    ================================================== */
 #scrapbook-page {
     display: none;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     position: fixed;
-    top: 0; left: 0;
+    top: 0; 
+    left: 0;
     background: #f4ece1;
     justify-content: center;
     align-items: center;
     z-index: 500;
-}
-
-#scrapbook-page.active { display: flex !important; }
-
-.planner-paper {
-    position: relative;
-    width: 90%;
-    max-width: 360px;
-    height: 85vh;
-    background-image: url('bg.diary.jpg'); 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 20px 15px;
     box-sizing: border-box;
 }
 
-.planner-header {
+#scrapbook-page.active { 
+    display: flex !important; 
+}
+
+/* 🌟 คืนทรงสลิม เรียวยาว ไม่อ้วนป้อม */
+.planner-paper {
+    position: relative;
+    width: 330px !important;
+    height: 620px !important;
+    max-height: 84vh !important;
+    background-image: url('bg.diary.jpg'); 
+    background-size: 100% 100% !important;
+    background-repeat: no-repeat !important;
+    border-radius: 24px !important;
+    box-shadow: 0 14px 35px rgba(0,0,0,0.16) !important;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: flex-end;
-    border-bottom: none !important;
-    padding-top: 50px;
-    padding-bottom: 5px;
+    padding: 16px 14px 14px 14px !important;
+    box-sizing: border-box;
+    cursor: crosshair;
+    user-select: none;
+    overflow: hidden;
 }
 
-#planner-month-title, .script-title {
-    font-family: 'Amoresa', cursive !important;
-    font-size: 38px !important;
-    font-weight: normal !important;
+/* 🌟 ปรับระดับหัวข้อให้ดันลงมาแนบชิดติดเส้นตาราง */
+.planner-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-end !important;
+    padding-top: 52px !important; /* ดันลงมาให้อยู่ติดเส้นตารางพอดี */
+    padding-bottom: 0px !important;
+    margin-bottom: 2px !important; /* แนบชิดเส้นตาราง */
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+}
+
+/* หัวข้อ August Log */
+#planner-month-title {
+    font-family: 'Amoresa', cursive;
+    font-size: 34px !important;
+    margin: 0 !important;
+    line-height: 0.9 !important;
     color: #2b2b2b;
-    margin: 0;
-    line-height: 1.1;
-    -webkit-font-smoothing: antialiased;
 }
 
+/* ข้อความ Date ชิดเส้นฐาน */
 .date-tag {
-    font-family: 'Kanit', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    color: #555;
-    margin-bottom: 4px;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    color: #5d4037 !important;
+    margin-bottom: 0px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
 }
 
+/* 🌟 พื้นที่วางสติ๊กเกอร์ To-Do */
 .planner-body {
     position: relative;
     flex-grow: 1;
-    margin: 10px 0;
+    width: 100%;
+    height: 100%;
+    margin-top: 4px;
 }
 
+/* สติ๊กเกอร์ To-Do */
 .scrapbook-sticker {
     position: absolute;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    transition: transform 0.3s ease;
+    align-items: flex-start;
+    transition: transform 0.2s ease;
+    z-index: 5;
 }
 
+/* ลายป้ายสก็อตเทปเหลืองแบบยาว */
 .tape-tag {
     background: #ffe082;
     color: #4a3728;
-    padding: 3px 10px;
+    padding: 5px 12px !important;
     border-radius: 4px;
     font-size: 11px;
     font-weight: bold;
-    box-shadow: 2px 3px 6px rgba(0,0,0,0.1);
+    box-shadow: 2px 3px 6px rgba(0,0,0,0.12);
     white-space: nowrap;
+    letter-spacing: 0.2px;
 }
 
 .tape-tag.reward-tag {
@@ -493,142 +649,109 @@ html, body {
     color: #4e342e;
 }
 
-/* 6.1 ================= 🎨 STAMP PALETTE & STAMPING ================= */
-
-/* ปรับให้หน้า Scrapbook เรียงหัว-ท้ายได้สวยงาม */
-#scrapbook-page {
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 50px;
-    gap: 15px;
+/* 🌟 แสตมป์มุมขวาบน */
+.scrapbook-corner-stamp {
+    position: absolute !important;
+    top: 8px !important;
+    right: 10px !important;
+    height: 48px !important;
+    width: auto !important;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2)) !important;
+    transform: rotate(2deg) !important;
+    pointer-events: none !important;
+    z-index: 10 !important;
 }
 
-/* พื้นที่กระดาษ Planner */
-.planner-paper {
-    position: relative;
-    cursor: crosshair; /* เปลี่ยนเคอร์เซอร์เป็นเป้าเล็งตอนปั๊ม */
+/* แสตมป์ที่กดปั๊ม */
+.stamped-item {
+    position: absolute;
+    pointer-events: none;
     user-select: none;
-    overflow: hidden;
+    font-size: 24px;
+    z-index: 6;
 }
 
-/* กล่องถาดแสตมป์ */
+.stamped-item.text-stamp {
+    font-size: 11px;
+    font-weight: 800;
+    color: #b71c1c;
+    border: 1.5px solid #b71c1c;
+    border-radius: 4px;
+    padding: 2px 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* ถาดเลือกแสตมป์ด้านล่าง */
 .stamp-palette {
-    background: rgba(255, 255, 255, 0.92);
-    border: 2px dashed #bcaaa4;
-    border-radius: 20px;
-    padding: 10px 18px;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    background: rgba(255, 255, 255, 0.96);
+    border-top: 1.5px dashed #bcaaa4;
+    padding: 10px 16px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    backdrop-filter: blur(8px);
-    max-width: 90%;
-    flex-wrap: wrap;
+    gap: 10px;
+    box-sizing: border-box;
+    z-index: 200;
     justify-content: center;
-    z-index: 10;
 }
 
 .palette-label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     color: #6d4c41;
 }
 
 .stamp-list {
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+    gap: 6px;
+    overflow-x: auto;
     align-items: center;
 }
 
-/* ปุ่มเลือกแสตมป์แต่ละตัว */
 .stamp-btn {
-    background: #fffdf9;
-    border: 1.5px solid #d7ccc8;
-    border-radius: 12px;
-    padding: 6px 10px;
-    font-size: 16px;
+    flex-shrink: 0;
+    padding: 5px 8px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #d7ccc8;
+    background: #fff;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.04);
 }
 
-.stamp-btn:hover {
-    transform: translateY(-2px) scale(1.1);
-    border-color: #8d6e63;
-    background: #fff8e1;
-}
-
-/* ปุ่มที่กำลังถูกเลือกใช้งาน */
 .stamp-btn.active {
     background: #ffe0b2;
     border-color: #e65100;
-    box-shadow: 0 0 8px rgba(230, 81, 0, 0.4);
-    transform: scale(1.1);
 }
 
-/* ปุ่มตรายางข้อความ */
 .stamp-btn.text-stamp-btn {
     font-size: 11px;
     font-weight: bold;
     color: #5d4037;
-    border-radius: 8px;
 }
 
-/* ปุ่มล้างแสตมป์ */
 .clear-stamps-btn {
+    flex-shrink: 0;
+    font-size: 10px;
+    padding: 5px 8px;
     background: #efebe9;
     border: 1px solid #bcaaa4;
-    border-radius: 10px;
-    padding: 5px 10px;
-    font-size: 11px;
-    color: #8d6e63;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s;
 }
 
-.clear-stamps-btn:hover {
-    background: #ffcdd2;
-    color: #c62828;
-    border-color: #e57373;
-}
-
-/* ตัวแสตมป์ที่ถูกปั๊มลงบนกระดาษ */
-.stamped-item {
-    position: absolute;
-    pointer-events: none; /* เพื่อไม่ให้บังการคลิกครั้งต่อไป */
-    user-select: none;
-    font-size: 24px;
-    animation: stampPop 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 5;
-}
-
-/* สไตล์เฉพาะตรายางข้อความบนกระดาษ */
-.stamped-item.text-stamp {
-    font-size: 12px;
-    font-weight: 800;
-    color: #b71c1c; /* สีหมึกแดงวินเทจ */
-    border: 1.5px solid #b71c1c;
-    border-radius: 4px;
-    padding: 2px 6px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    background: rgba(255, 255, 255, 0.4);
-}
-
-@keyframes stampPop {
-    0% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
-
-
-/* ==================================================
-   📅 7. CALENDAR MODAL (ปฏิทิน Streak)
-   ================================================== */
+/* Modal ปฏิทิน */
 .modal-overlay {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(4px);
     display: none;
@@ -645,20 +768,18 @@ html, body {
     padding: 20px;
     text-align: center;
     position: relative;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    border: 2px solid #fff;
 }
 
 .close-btn {
     position: absolute;
-    top: 12px; right: 15px;
-    background: none; border: none;
-    font-size: 16px; color: #8d6e63;
+    top: 12px; 
+    right: 15px;
+    background: none; 
+    border: none;
+    font-size: 16px; 
+    color: #8d6e63;
     cursor: pointer;
 }
-
-.modal-content h3 { margin: 0 0 4px 0; color: #4a3728; font-size: 16px; }
-.streak-subtitle { margin: 0 0 15px 0; color: #8d6e63; font-size: 11px; }
 
 .calendar-grid {
     display: grid;
@@ -682,7 +803,6 @@ html, body {
 .day-box.checked {
     background: #ffe082;
     color: #4a3728;
-    box-shadow: 0 2px 6px rgba(255, 179, 0, 0.3);
 }
 
 .streak-count {
@@ -693,356 +813,4 @@ html, body {
     padding: 6px 12px;
     border-radius: 12px;
     display: inline-block;
-}
-
-.month-title {
-    margin: 6px 0 2px 0;
-    font-size: 14px;
-    color: #8d6e63;
-    font-weight: bold;
-}
-
-
-/* ==================================================
-   💌 8. ENVELOPE CARD (ซองจดหมาย)
-   ================================================== */
-.envelope-card {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 75%; height: 120px;
-    background: #f4eae1;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    display: flex; justify-content: center; align-items: center;
-    cursor: pointer; overflow: hidden;
-    transition: all 0.5s ease;
-    z-index: 1;
-}
-
-.wax-seal {
-    position: absolute;
-    width: 42px; height: 42px;
-    background: #902c2c;
-    border-radius: 50%;
-    display: flex; justify-content: center; align-items: center;
-    font-size: 18px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    z-index: 3;
-    transition: transform 0.3s, opacity 0.3s;
-}
-
-.letter-content {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.5s ease;
-    text-align: center;
-    padding: 10px;
-}
-
-.reward-title { font-size: 10px; color: #8d6e63; font-weight: bold; margin-bottom: 4px; }
-.reward-text { font-size: 12px; color: #3e2723; font-weight: bold; line-height: 1.4; }
-
-.envelope-card.open { height: 160px; background: #fffdf0; }
-.envelope-card.open .wax-seal { opacity: 0; transform: scale(0); }
-.envelope-card.open .letter-content { opacity: 1; transform: translateY(0); }
-
-/* 🔒 ซ่อนหน้าที่ไม่ active ให้หายไปจริง ห้ามมาขวางคลิก */
-.screen:not(.active) {
-    display: none !important;
-    pointer-events: none !important;
-}
-
-/* ================= 📱 MOBILE: รวม 4 กล่องพอดีจอ + ไม่ล้น ================= */
-/* 🔒 ซ่อนหน้าที่ไม่ได้เปิด ไม่ให้มากีดขวางการคลิก */
-.screen:not(.active) {
-    display: none !important;
-    pointer-events: none !important;
-}
-
-   /* ================= 📱 MOBILE RESPONSIVE (ฉบับเหมือนในคอม 100%) ================= */
-@media (max-width: 600px) {
-
-    /* 🏡 1. หน้าแรก (Home) */
-    #home-page {
-        height: 100vh !important;
-        max-height: 100vh !important;
-        overflow: hidden !important;
-        padding: 10px 15px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        box-sizing: border-box !important;
-        gap: 5px !important;
-    }
-
-    #home-page h1, .main-title, .logo-title {
-        font-size: 28px !important;
-        margin: 0 !important;
-        white-space: nowrap !important;
-    }
-
-    #home-page p, .subtitle {
-        font-size: 11px !important;
-        margin: 2px 0 6px 0 !important;
-    }
-
-    .home-streak-btn, .streak-btn {
-        padding: 5px 12px !important;
-        font-size: 11px !important;
-        margin-bottom: 8px !important;
-    }
-
-    .theme-selection-grid, .theme-container, .themes-wrapper {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        grid-template-rows: 1fr 1fr !important;
-        gap: 8px !important;
-        width: 100% !important;
-        max-width: 320px !important;
-        margin: 0 auto !important;
-    }
-
-    .theme-card {
-        padding: 8px 6px !important;
-        min-height: 75px !important;
-        max-height: 90px !important;
-        border-radius: 12px !important;
-    }
-
-    .theme-card h3 { font-size: 11px !important; margin: 2px 0 !important; }
-    .theme-card p {
-        font-size: 8.5px !important;
-        line-height: 1.1 !important;
-        margin: 0 !important;
-        display: -webkit-box !important;
-        -webkit-line-clamp: 2 !important;
-        line-clamp: 2 !important;
-        -webkit-box-orient: vertical !important;
-        overflow: hidden !important;
-    }
-
-
-    /* 📖 2. หน้า Scrapbook: ล็อกหน้าจอให้อยู่กับที่ + คืนลายเส้นกระดาษเดิม */
-    /* 📖 2. หน้า Scrapbook (ฉบับแก้ August Log เข้าช่อง + ถาดแสตมป์อยู่ตรงกลาง) */
-    #scrapbook-page {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        overflow: hidden !important; /* ห้ามเลื่อนทั้งหน้าจอเด็ดขาด */
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        padding-top: 50px !important;
-        padding-bottom: 75px !important;
-        box-sizing: border-box !important;
-    }
-
-    /* ปุ่มบน */
-    .top-nav {
-        position: absolute !important;
-        top: 12px !important;
-        left: 15px !important;
-        right: 15px !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        z-index: 100 !important;
-    }
-
-    /* 🏷️ แถบหัวข้อ August Log + วันที่ (เพิ่มใหม่: เพื่อไม่ให้ทับเส้นตาราง) */
-    .planner-header {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 14px 16px 0 16px !important; /* เว้นระยะจากขอบบนกระดาษ */
-        margin-bottom: 4px !important;
-    }
-
-    .planner-header h1, 
-    #planner-month-title {
-        font-size: 35px !important; /* ย่อขนาดตัวอักษร August Log ให้เข้าล็อกพอดี */
-        line-height: 1.2 !important;
-        margin: 0 !important;
-    }
-
-    .date-tag {
-        font-size: 11px !important;
-        margin: 0 !important;
-    }
-
-    /* 📄 ตัวกระดาษ: ลายพื้นหลังเดิม + สัดส่วนพอดีจอ */
-    .planner-paper {
-        width: 90% !important;
-        max-width: 340px !important;
-        height: calc(100vh - 145px) !important; /* คำนวณความสูงให้พอดี ไม่ชนถาดล่าง */
-        max-height: 520px !important;
-        margin: 0 auto !important;
-        background-size: 100% 100% !important;
-        background-repeat: no-repeat !important;
-        position: relative !important;
-        box-sizing: border-box !important;
-    }
-
-    /* 🏷️ 3. ถาดแสตมป์: จัดกึ่งกลางจอ ไม่เอียงชิดซ้าย */
-    .stamp-palette {
-        position: fixed !important;
-        bottom: 0 !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important; /* 👈 ล็อกถาดให้อยู่กึ่งกลางจอเป๊ะๆ */
-        width: 100vw !important;
-        max-width: 100% !important;
-        background: rgba(255, 255, 255, 0.96) !important;
-        border-top: 1.5px dashed #bcaaa4 !important;
-        border-radius: 18px 18px 0 0 !important;
-        padding: 10px 16px 16px 16px !important;
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        gap: 8px !important;
-        box-sizing: border-box !important;
-        z-index: 200 !important;
-        backdrop-filter: blur(8px) !important;
-    }
-
-    .palette-label {
-        font-size: 10px !important;
-        white-space: nowrap !important;
-        color: #6d4c41 !important;
-        flex-shrink: 0 !important;
-    }
-
-    /* 🌟 ให้เลื่อนแนวนอนได้เฉพาะตรงนี้ */
-    .stamp-list {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important; /* สไลด์ซ้าย-ขวาได้ */
-        overflow-y: hidden !important;
-        gap: 6px !important;
-        padding: 2px 4px !important;
-        scrollbar-width: none !important;
-        -webkit-overflow-scrolling: touch !important;
-        flex-grow: 1 !important;
-    }
-
-    .stamp-list::-webkit-scrollbar {
-        display: none !important;
-    }
-
-    .stamp-btn {
-        flex-shrink: 0 !important;
-        padding: 5px 8px !important;
-        font-size: 14px !important;
-        border-radius: 8px !important;
-    }
-
-    .clear-stamps-btn {
-        flex-shrink: 0 !important;
-        font-size: 9px !important;
-        padding: 4px 6px !important;
-        white-space: nowrap !important;
-    }
-}
-
-/* บังคับให้ถาดแสตมป์ยอมรับ Scroll แนวนอนอย่างชัดเจน */
-.stamp-picker-container {
-    position: fixed;
-    bottom: 95px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 380px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 12px 16px;
-    border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    z-index: 999;
-    text-align: center;
-    box-sizing: border-box;
-    pointer-events: auto !important; /* ป้องกันการโดนบล็อกคลิก */
-}
-
-.picker-title {
-    font-size: 12px;
-    color: #5d4037;
-    margin: 0 0 8px 0;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-}
-
-.stamp-options-scroll {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    gap: 12px;
-    overflow-x: scroll !important; /* บังคับเปิด Scroll แนวนอน */
-    overflow-y: hidden !important;
-    width: 100%;
-    box-sizing: border-box;
-    cursor: grab;
-    user-select: none;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x; /* อนุญาตให้เลื่อนแนวนอนบนหน้าจอสัมผัส */
-}
-
-.stamp-options-scroll:active {
-    cursor: grabbing;
-}
-
-/* ซ่อน Scrollbar ให้ดูสะอาดตา */
-.stamp-options-scroll::-webkit-scrollbar {
-    display: none;
-}
-.stamp-options-scroll {
-    scrollbar-width: none;
-}
-
-/* ป้องกันรูปโดนบีบขนาด */
-.stamp-opt {
-    height: 52px !important;
-    width: auto !important;
-    flex-shrink: 0 !important; /* สำคัญ: ห้ามรูปหดตัว */
-    border-radius: 4px;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-drag: none;
-    transition: transform 0.2s ease, filter 0.2s ease;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-}
-
-/* ✉️ แสตมป์มุมขวาบนของซองจดหมาย */
-.envelope-card {
-    position: relative;
-}
-
-.envelope-stamp-img {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    height: 38px;
-    width: auto;
-    border-radius: 3px;
-    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
-    transform: rotate(2deg);
-    pointer-events: none;
-}
-
-/* 📖 แสตมป์มุมขวาบนในหน้า Scrapbook Diary */
-.scrapbook-corner-stamp {
-    position: absolute;
-    top: 14px;
-    right: 16px;
-    height: 58px;
-    width: auto;
-    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.18));
-    transform: rotate(-3deg);
-    pointer-events: none;
-    z-index: 10;
 }

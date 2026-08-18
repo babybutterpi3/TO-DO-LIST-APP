@@ -1072,4 +1072,16 @@ html, body {
         overflow: hidden !important;
         text-overflow: ellipsis !important;
     }
+
+    @media (max-width: 768px) {
+    .book-container {
+        grid-template-columns: 1fr; /* แสดงทีละหน้า */
+    }
+    .book-spine {
+        display: none; /* ซ่อนเส้นพับตรงกลาง */
+    }
+    .stamp-grid {
+        grid-template-columns: repeat(2, 1fr); /* จัดเป็น 2 คอลัมน์ต่อหน้า */
+    }
+}
 }

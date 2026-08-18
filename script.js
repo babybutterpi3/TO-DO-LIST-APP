@@ -618,3 +618,92 @@ function clearDayStamps() {
 
     document.querySelectorAll(".stamped-item").forEach(item => item.remove());
 }
+
+// ================= 📔 7. ระบบ STAMP ALBUM (สมุดสะสมแสตมป์) =================
+const stampCatalog = [
+    { src: "st-alice.png", name: "Alice Wonderland" },
+    { src: "st-angel.png", name: "Vintage Angel" },
+    { src: "st-astronomy.png", name: "Astronomy Chart" },
+    { src: "st-cat.png", name: "Black Cat" },
+    { src: "st-fungi.png", name: "Wild Fungi" },
+    { src: "st-hellas.png", name: "Hellas Myth" },
+    { src: "st-horses.png", name: "Noble Horses" },
+    { src: "st-italia.png", name: "Italia Classic" },
+    { src: "st-jester.png", name: "Retro Jester" },
+    { src: "st-korea.png", name: "Old Korea" },
+    { src: "st-laos.png", name: "Postes Laos" },
+    { src: "st-mongol.png", name: "Mongol Rider" },
+    { src: "st-skull.png", name: "Flora Skull" },
+    { src: "st-smoke.png", name: "Blue Smoke" },
+    { src: "st-vaticana.png", name: "Posta Vaticana" }
+];
+
+let currentAlbumSpread = 0; // หน้าคู่ (0 = หน้า 1-2, 1 = หน้า 3-4, ...)
+const stampsPerPage = 4; // แต่ละหน้ามี 4 ช่อง (หน้าคู่รวม 8 ช่อง)
+
+function openStampAlbum() {
+    currentAlbumSpread = 0;
+    renderStampAlbum();
+    let modal = document.getElementById("stamp-album-modal");
+    if (modal) modal.style.display = "flex";
+}
+
+function closeStampAlbum() {
+    let modal = document.getElementById("stamp-album-modal");
+    if (modal) modal.style.display = "none";
+}
+
+function renderStampAlbum() {
+    const leftPage = document.getElementById("album-left-page");
+    const rightPage = document.getElementById("album-right-page");
+    const pageNumText = document.getElementById("album-page-num");
+
+    if (!leftPage || !rightPage) return;
+
+    leftPage.innerHTML = "";
+    rightPage.innerHTML = "";
+
+    const startIndex = currentAlbumSpread * (stampsPerPage * 2);
+    const leftStamps = stampCatalog.slice(startIndex, startIndex + stampsPerPage);
+    const rightStamps = stampCatalog.slice(startIndex + stampsPerPage, startIndex + (stampsPerPage * 2));
+
+    // วาดหน้าซ้าย
+    leftStamps.forEach(stamp => {
+        leftPage.appendChild(createStampSlot(stamp));
+    });
+
+    // วาดหน้าขวา
+    rightStamps.forEach(stamp => {
+        rightPage.appendChild(createStampSlot(stamp));
+    });
+
+    // อัปเดตตัวเลขหน้า
+    const page1 = (currentAlbumSpread * 2) + 1;
+    const page2 = page1 + 1;
+    if (pageNumText) pageNumText.innerText = `Pages ${page1} - ${page2}`;
+}
+
+function createStampSlot(stamp) {
+    const slot = document.createElement("div");
+    slot.classList.add("album-stamp-slot");
+    slot.innerHTML = `
+        <img src="${stamp.src}" alt="${stamp.name}">
+        <span class="album-stamp-name">${stamp.name}</span>
+    `;
+    return slot;
+}
+
+function nextAlbumPage() {
+    const maxSpreads = Math.ceil(stampCatalog.length / (stampsPerPage * 2)) - 1;
+    if (currentAlbumSpread < maxSpreads) {
+        currentAlbumSpread++;
+        renderStampAlbum();
+    }
+}
+
+function prevAlbumPage() {
+    if (currentAlbumSpread > 0) {
+        currentAlbumSpread--;
+        renderStampAlbum();
+    }
+}

@@ -130,6 +130,50 @@ html, body {
     border-color: #8d6e63;
 }
 
+/* กล่องรวมปุ่มหน้าแรก จัดเรียงคู่กันหรือวางเป็นระเบียบ */
+.home-btn-group {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* ล็อกสไตล์ให้ปุ่มหน้าแรกโค้งมนเหมือนกันทั้งคู่ */
+.home-streak-btn {
+    padding: 10px 18px !important;
+    font-size: 13px !important;
+    font-family: 'Kanit', sans-serif !important;
+    font-weight: bold !important;
+    color: #5d4037 !important;
+    background: rgba(255, 255, 255, 0.88) !important;
+    border: 1.5px dashed #bcaaa4 !important;
+    border-radius: 25px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.25s ease !important;
+    backdrop-filter: blur(6px) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    outline: none !important;
+    margin: 0 !important;
+}
+
+.home-streak-btn:hover {
+    transform: scale(1.05) translateY(-2px) !important;
+    background: #ffffff !important;
+    box-shadow: 0 6px 16px rgba(141, 110, 99, 0.22) !important;
+    border-color: #8d6e63 !important;
+}
+
+.home-streak-btn:active {
+    transform: scale(0.95) !important;
+}
+
 .theme-grid, .theme-list, .theme-options {
     display: flex !important;
     flex-direction: row !important;
@@ -814,3 +858,161 @@ html, body {
     border-radius: 12px;
     display: inline-block;
 }
+
+/* ==================================================
+   📔 9. MINI STAMP ALBUM (สมุดสะสมแสตมป์จิ๋ว 2 ฝั่ง)
+   ================================================== */
+.album-popup-wrapper {
+    background: #fdf8f2;
+    border: 3px solid #d7ccc8;
+    border-radius: 28px;
+    padding: 24px 20px 20px 20px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 92%;
+    max-width: 480px;
+    box-sizing: border-box;
+}
+
+.album-title-tag {
+    font-family: 'Amoresa', cursive;
+    font-size: 26px;
+    color: #4e342e;
+    margin-bottom: 12px;
+}
+
+.album-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #8d6e63;
+    cursor: pointer;
+}
+
+/* ตัวรูปเล่มสมุดเปิดกาง */
+.mini-book-container {
+    display: flex;
+    width: 100%;
+    height: 270px;
+    background: #fffcf7;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12), inset 0 0 10px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e0d6cc;
+    position: relative;
+    overflow: hidden;
+}
+
+/* สันสมุดเงาตรงกลาง */
+.book-spine {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.06), rgba(0,0,0,0.18), rgba(0,0,0,0.06));
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* หน้ากระดาษแต่ละฝั่ง */
+.book-page {
+    flex: 1;
+    padding: 14px 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 8px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-items: center;
+}
+
+.book-page.left-page {
+    border-right: 1px solid #ece5dd;
+    padding-right: 14px;
+}
+
+.book-page.right-page {
+    padding-left: 14px;
+}
+
+/* ช่องใส่แสตมป์แต่ละช่อง */
+.album-stamp-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(245, 238, 230, 0.4);
+    border: 1.5px dashed #d7ccc8;
+    border-radius: 10px;
+    width: 90%;
+    height: 100%;
+    padding: 4px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease;
+}
+
+.album-stamp-slot:hover {
+    transform: scale(1.04);
+    background: rgba(255, 248, 240, 0.8);
+    border-color: #8d6e63;
+}
+
+.album-stamp-slot img {
+    height: 52px;
+    width: auto;
+    border-radius: 3px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+.album-stamp-name {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: #6d4c41;
+    margin-top: 4px;
+    white-space: nowrap;
+}
+
+/* แถบควบคุมเปลี่ยนหน้า */
+.album-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 14px;
+}
+
+.page-nav-btn {
+    background: #efebe9;
+    border: 1px solid #bcaaa4;
+    border-radius: 12px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #5d4037;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.page-nav-btn:hover {
+    background: #d7ccc8;
+    transform: translateY(-1px);
+}
+
+.page-indicator {
+    font-size: 12px;
+    font-weight: bold;
+    color: #8d6e63;
+}
+
+.album-btn {
+    margin-right: 4px;
+}
+

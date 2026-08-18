@@ -32,10 +32,14 @@
                 <p>Pick your today theme</p>
             </div>
         <!-- 🌸 วางไว้ในกล่องหน้า home-page ตรงตำแหน่งที่ต้องการ -->
-            <button class="home-streak-btn" onclick="openStreakModal()">
-            ✨ 📅 View Streak Log 🌸
-            </button>
-
+            <div class="home-btn-group">
+                <button class="home-streak-btn" onclick="openStreakModal()">
+                    ✨ 📅 View Streak Log 🌸
+                </button>
+                <button class="home-streak-btn" onclick="openStampAlbum()">
+                    🏷️ ✨ View Stamp Album 📔
+                </button>
+            </div>
             <!-- เมนูการ์ดเลือกธีม -->
             <div class="theme-list">
                 <!-- 1. ธีม Breakfast -->
@@ -86,6 +90,7 @@
                 <div class="top-nav">
                     <button onclick="goToHome()" class="nav-btn">🏠 Themes</button>
                     <button onclick="openStreakModal()" class="nav-btn streak-btn">🗓️ Streak</button>
+                    <button onclick="openStampAlbum()" class="nav-btn stamp-btn">📔 Stamp Album</button>
                 </div>
 
             <!-- กล่องถาดไม้ -->
@@ -148,6 +153,7 @@
             <div class="top-nav">
                 <button class="nav-btn" onclick="goToHome()">🏠 Themes</button>
                 <button class="nav-btn streak-btn" onclick="openStreakModal()">🗓️ Streak</button>
+                <button class="nav-btn stamp-btn" onclick="openStampAlbum()">📔 Stamp Album</button>
             </div>
 
             <!-- ถาดแพ็กผลไม้ -->
@@ -214,6 +220,7 @@
         <div class="top-nav">
             <button class="nav-btn" onclick="goToHome()">🏠 Themes</button>
             <button class="nav-btn streak-btn" onclick="openStreakModal()">🗓️ Streak</button>
+            <button class="nav-btn stamp-btn" onclick="openStampAlbum()">📔 Stamp Album</button>
         </div>
 
         <!-- ตะกร้าปิคนิค -->
@@ -353,6 +360,36 @@
         <!-- 🌟 ปุ่มกดยืนยันหลังจากเลือกแสตมป์เสร็จแล้ว -->
         <button type="button" class="confirm-stamp-btn" onclick="finishSealing()">done & seal! ✨</button>
     </div>
-                                                      
+    
+    <!-- 📔 Modal สมุดสะสมแสตมป์จิ๋ว 2 ฝั่ง -->
+        <div id="stamp-album-modal" class="modal-overlay" style="display: none;">
+            <div class="album-popup-wrapper">
+                <button class="album-close-btn" onclick="closeStampAlbum()">✕</button>
+                <div class="album-title-tag">✨ Vintage Stamp Album ✨</div>
+
+                <div class="mini-book-container">
+                    <!-- สันสมุดตรงกลาง -->
+                    <div class="book-spine"></div>
+
+                    <!-- หน้าซ้าย -->
+                    <div class="book-page left-page" id="album-left-page">
+                        <!-- แสตมป์จะถูกวาดที่นี่ด้วย JS -->
+                    </div>
+
+                    <!-- หน้าขวา -->
+                    <div class="book-page right-page" id="album-right-page">
+                        <!-- แสตมป์จะถูกวาดที่นี่ด้วย JS -->
+                    </div>
+                </div>
+
+                <!-- แถบควบคุมเปลี่ยนหน้า -->
+                <div class="album-controls">
+                    <button class="page-nav-btn" onclick="prevAlbumPage()">◀ Prev</button>
+                    <span class="page-indicator" id="album-page-num">Pages 1 - 2</span>
+                    <button class="page-nav-btn" onclick="nextAlbumPage()">Next ▶</button>
+                </div>
+            </div>
+        </div>
+
 </body>
 </html>

@@ -822,34 +822,34 @@ html, body {
 }
 
 /* ==================================================
-   📔 9. MINI STAMP ALBUM (สมุดสะสมแสตมป์จิ๋ว 2 ฝั่ง)
+   📔 9. MINI STAMP ALBUM (สมุดสะสมแสตมป์จิ๋ว 2 ฝั่ง พอดีจอมือถือ)
    ================================================== */
 .album-popup-wrapper {
     background: #fdf8f2;
     border: 3px solid #d7ccc8;
-    border-radius: 28px;
-    padding: 24px 20px 20px 20px;
+    border-radius: 24px;
+    padding: 20px 14px 16px 14px;
     position: relative;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 92%;
-    max-width: 480px;
+    max-width: 360px; /* ขนาดกะทัดรัดพอดีจอมือถือ */
     box-sizing: border-box;
 }
 
 .album-title-tag {
     font-family: 'Amoresa', cursive;
-    font-size: 26px;
+    font-size: 24px;
     color: #4e342e;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .album-close-btn {
     position: absolute;
-    top: 12px;
-    right: 16px;
+    top: 10px;
+    right: 14px;
     background: none;
     border: none;
     font-size: 18px;
@@ -857,51 +857,55 @@ html, body {
     cursor: pointer;
 }
 
+/* ตัวรูปเล่มสมุดเปิดกาง */
 .mini-book-container {
     display: flex;
     width: 100%;
-    height: 270px;
+    height: 250px;
     background: #fffcf7;
-    border-radius: 14px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12), inset 0 0 10px rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1), inset 0 0 8px rgba(0, 0, 0, 0.03);
     border: 1px solid #e0d6cc;
     position: relative;
     overflow: hidden;
 }
 
+/* สันสมุดเงาตรงกลาง */
 .book-spine {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 18px;
+    width: 14px;
     height: 100%;
-    background: linear-gradient(to right, rgba(0,0,0,0.06), rgba(0,0,0,0.18), rgba(0,0,0,0.06));
+    background: linear-gradient(to right, rgba(0,0,0,0.04), rgba(0,0,0,0.14), rgba(0,0,0,0.04));
     z-index: 10;
     pointer-events: none;
 }
 
+/* หน้ากระดาษแต่ละฝั่ง: จัดเรียงแถวละ 1 ชิ้น รวม 2 ชั้นต่อหน้า */
 .book-page {
     flex: 1;
-    padding: 14px 10px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    width: 50%;
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
     gap: 8px;
     box-sizing: border-box;
     align-items: center;
-    justify-items: center;
+    justify-content: space-around;
 }
 
 .book-page.left-page {
     border-right: 1px solid #ece5dd;
-    padding-right: 14px;
+    padding-right: 10px;
 }
 
 .book-page.right-page {
-    padding-left: 14px;
+    padding-left: 10px;
 }
 
+/* ช่องใส่แสตมป์ */
 .album-stamp-slot {
     display: flex;
     flex-direction: column;
@@ -909,68 +913,55 @@ html, body {
     justify-content: center;
     background: rgba(245, 238, 230, 0.4);
     border: 1.5px dashed #d7ccc8;
-    border-radius: 10px;
-    width: 90%;
-    height: 100%;
+    border-radius: 8px;
+    width: 95%;
+    height: 48%;
     padding: 4px;
     box-sizing: border-box;
-    transition: transform 0.2s ease;
-}
-
-.album-stamp-slot:hover {
-    transform: scale(1.04);
-    background: rgba(255, 248, 240, 0.8);
-    border-color: #8d6e63;
 }
 
 .album-stamp-slot img {
-    height: 52px;
+    height: 46px;
     width: auto;
     border-radius: 3px;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
 }
 
 .album-stamp-name {
-    font-size: 9.5px;
+    font-size: 8.5px;
     font-weight: 600;
     color: #6d4c41;
-    margin-top: 4px;
+    margin-top: 2px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
+/* แถบควบคุมเปลี่ยนหน้า */
 .album-controls {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 80%;
-    margin-top: 14px;
+    width: 85%;
+    margin-top: 12px;
 }
 
 .page-nav-btn {
     background: #efebe9;
     border: 1px solid #bcaaa4;
     border-radius: 12px;
-    padding: 5px 14px;
+    padding: 4px 12px;
     font-size: 11px;
     font-weight: bold;
     color: #5d4037;
     cursor: pointer;
-    transition: all 0.2s;
-}
-
-.page-nav-btn:hover {
-    background: #d7ccc8;
-    transform: translateY(-1px);
 }
 
 .page-indicator {
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: bold;
     color: #8d6e63;
-}
-
-.album-btn {
-    margin-right: 4px;
 }
 
 /* ==================================================

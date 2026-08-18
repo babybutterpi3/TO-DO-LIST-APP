@@ -638,8 +638,8 @@ const stampCatalog = [
     { src: "st-vaticana.png", name: "Posta Vaticana" }
 ];
 
-let currentAlbumSpread = 0; // หน้าคู่ (0 = หน้า 1-2, 1 = หน้า 3-4, ...)
-const stampsPerPage = 4; // แต่ละหน้ามี 4 ช่อง (หน้าคู่รวม 8 ช่อง)
+let currentAlbumSpread = 0;
+const stampsPerPage = 2; // 🌟 ปรับเป็น 2 ชิ้นต่อหน้า (หน้าซ้าย 2 + หน้าขวา 2 = รวม 4 ชิ้นต่อคู่หน้า)
 
 function openStampAlbum() {
     currentAlbumSpread = 0;

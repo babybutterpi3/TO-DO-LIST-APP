@@ -619,27 +619,52 @@ function clearDayStamps() {
     document.querySelectorAll(".stamped-item").forEach(item => item.remove());
 }
 
-// ================= 📔 7. ระบบ STAMP ALBUM (สมุดสะสมแสตมป์) =================
+// ================= 📔 7. ระบบ STAMP ALBUM & LOCKED REWARDS =================
 const stampCatalog = [
-    { src: "st-alice.png", name: "Alice Wonderland" },
-    { src: "st-angel.png", name: "Vintage Angel" },
-    { src: "st-astronomy.png", name: "Astronomy Chart" },
-    { src: "st-cat.png", name: "Black Cat" },
-    { src: "st-fungi.png", name: "Wild Fungi" },
-    { src: "st-hellas.png", name: "Hellas Myth" },
-    { src: "st-horses.png", name: "Noble Horses" },
-    { src: "st-italia.png", name: "Italia Classic" },
-    { src: "st-jester.png", name: "Retro Jester" },
-    { src: "st-korea.png", name: "Old Korea" },
-    { src: "st-laos.png", name: "Postes Laos" },
-    { src: "st-mongol.png", name: "Mongol Rider" },
-    { src: "st-skull.png", name: "Flora Skull" },
-    { src: "st-smoke.png", name: "Blue Smoke" },
-    { src: "st-vaticana.png", name: "Posta Vaticana" }
-];
+    // 🌟 แสตมป์พื้นฐาน (ปลดล็อกตั้งแต่เริ่มต้น: reqStreak: 0)
+    { src: "st-alice.png", name: "Alice Wonderland", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-angel.png", name: "Vintage Angel", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-astronomy.png", name: "Astronomy Chart", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-cat.png", name: "Black Cat", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-fungi.png", name: "Wild Fungi", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-hellas.png", name: "Hellas Myth", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-horses.png", name: "Noble Horses", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-italia.png", name: "Italia Classic", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-jester.png", name: "Retro Jester", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-korea.png", name: "Old Korea", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-laos.png", name: "Postes Laos", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-mongol.png", name: "Mongol Rider", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-skull.png", name: "Flora Skull", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-smoke.png", name: "Blue Smoke", date: "13 Aug 2026", reqStreak: 0 },
+    { src: "st-vaticana.png", name: "Posta Vaticana", date: "13 Aug 2026", reqStreak: 0 },
+
+    // 🔒 แสตมป์ลับที่ต้องทำ Streak เพื่อปลดล็อก!
+    { src: "st-francaise.png", name: "Française Classic", date: "19 Aug 2026", reqStreak: 2 },
+    { src: "st-Czechoslovakia.png", name: "Czechoslovakia", date: "19 Aug 2026", reqStreak: 3 },
+    { src: "st-sheep.png", name: "Green Meadow", date: "19 Aug 2026", reqStreak: 4 },
+    { src: "st-deutsche.png", name: "Deutsche Post", date: "19 Aug 2026", reqStreak: 5 },
+    { src: "st-first.dino.ch.png", name: "First Dino", date: "19 Aug 2026", reqStreak: 7 },
+    { src: "st-leke.png", name: "Leke Fantasy", date: "19 Aug 2026", reqStreak: 10 },
+    { src: "st-dragon.png", name: "Green Dragon", date: "19 Aug 2026", reqStreak: 12 },
+    // 🌟 คู่ที่ 1 (Streak ครบ 8 วัน ปลดล็อก 2 ลาย)
+    { src: "st-junji1.png", name: "Junji Ito Mask", date: "20 Aug 2026", reqStreak: 14 },
+    { src: "st-junji2.png", name: "Junji Ito Spiral", date: "20 Aug 2026", reqStreak: 14 },
+
+    // 🌟 คู่ที่ 2 (Streak ครบ 10 วัน ปลดล็อก 2 ลาย)
+    { src: "st-vietnam.png", name: "Postes Vietnam", date: "20 Aug 2026", reqStreak: 16 },
+    { src: "st-clown.png", name: "Magyar Posta", date: "20 Aug 2026", reqStreak: 16 },
+
+    // 🌟 คู่ที่ 3 (Streak ครบ 12 วัน ปลดล็อก 2 ลาย)
+    { src: "st-londres.png", name: "Correos del Perú", date: "20 Aug 2026", reqStreak: 18 },
+    { src: "st-monaco.png", name: "Monaco Croix", date: "20 Aug 2026", reqStreak: 18 },
+
+    // 🌟 คู่ที่ 4 (Streak ครบ 14 วัน ปลดล็อก 2 ลาย)
+    { src: "st-nine.hearts.png", name: "Nine of Hearts", date: "20 Aug 2026", reqStreak: 20 },
+    { src: "st-la.poste.png", name: "L'Écuyère France", date: "20 Aug 2026", reqStreak: 20 },
+]; //
 
 let currentAlbumSpread = 0;
-const stampsPerPage = 2; // 🌟 ปรับเป็น 2 ชิ้นต่อหน้า (หน้าซ้าย 2 + หน้าขวา 2 = รวม 4 ชิ้นต่อคู่หน้า)
+const stampsPerPage = 2; // ฝั่งละ 2 ชิ้น รวมคู่หน้าละ 4 ชิ้น
 
 function openStampAlbum() {
     currentAlbumSpread = 0;
@@ -667,15 +692,9 @@ function renderStampAlbum() {
     const leftStamps = stampCatalog.slice(startIndex, startIndex + stampsPerPage);
     const rightStamps = stampCatalog.slice(startIndex + stampsPerPage, startIndex + (stampsPerPage * 2));
 
-    // วาดหน้าซ้าย
-    leftStamps.forEach(stamp => {
-        leftPage.appendChild(createStampSlot(stamp));
-    });
-
-    // วาดหน้าขวา
-    rightStamps.forEach(stamp => {
-        rightPage.appendChild(createStampSlot(stamp));
-    });
+    // วาดหน้าซ้ายและขวา
+    leftStamps.forEach(stamp => leftPage.appendChild(createStampSlot(stamp)));
+    rightStamps.forEach(stamp => rightPage.appendChild(createStampSlot(stamp)));
 
     // อัปเดตตัวเลขหน้า
     const page1 = (currentAlbumSpread * 2) + 1;
@@ -683,14 +702,60 @@ function renderStampAlbum() {
     if (pageNumText) pageNumText.innerText = `Pages ${page1} - ${page2}`;
 }
 
+// 🌟 สร้างช่องแสตมป์ พร้อมเช็กสถานะการปลดล็อก
 function createStampSlot(stamp) {
+    const currentStreak = (checkedDays && Array.isArray(checkedDays)) ? checkedDays.length : 0;
+    const isUnlocked = currentStreak >= (stamp.reqStreak || 0);
+
     const slot = document.createElement("div");
     slot.classList.add("album-stamp-slot");
-    slot.innerHTML = `
-        <img src="${stamp.src}" alt="${stamp.name}">
-        <span class="album-stamp-name">${stamp.name}</span>
-    `;
+    slot.style.cursor = "pointer";
+
+    if (isUnlocked) {
+        // ปลดล็อกแล้ว: แสดงรูปปกติและกดซูมดูรูปใหญ่ได้
+        slot.onclick = () => openStampZoom(stamp);
+        slot.innerHTML = `
+            <img src="${stamp.src}" alt="${stamp.name}">
+            <span class="album-stamp-name">${stamp.name}</span>
+        `;
+    } else {
+        // ยังไม่ปลดล็อก: แสดงภาพเงาดำพร้อมแม่กุญแจ
+        slot.classList.add("stamp-locked");
+        slot.onclick = () => alert(`🔒 ลายนี้ต้องทำ Streak ให้ครบ ${stamp.reqStreak} วันก่อนน้า! (ตอนนี้: ${currentStreak}/${stamp.reqStreak} วัน) ✨`);
+        slot.innerHTML = `
+            <div class="lock-overlay">
+                <img src="${stamp.src}" class="locked-img" alt="Locked">
+                <span class="lock-icon">🔒</span>
+            </div>
+            <span class="album-stamp-name lock-text">Streak ${stamp.reqStreak} Days</span>
+        `;
+    }
+
     return slot;
+}
+
+// 🔍 ฟังก์ชันเปิดดูรูปใหญ่
+function openStampZoom(stamp) {
+    const modal = document.getElementById("stamp-zoom-modal");
+    const img = document.getElementById("zoom-stamp-img");
+    const name = document.getElementById("zoom-stamp-name");
+    const date = document.getElementById("zoom-stamp-date");
+
+    if (!modal || !img || !name || !date) return;
+
+    img.src = stamp.src;
+    name.innerText = stamp.name;
+    date.innerText = stamp.date || "Original Collection";
+
+    modal.style.display = "flex";
+}
+
+// 🔍 ฟังก์ชันปิดหน้าต่างดูรูปใหญ่
+function closeStampZoom(event, forceClose = false) {
+    if (forceClose || (event && event.target.id === "stamp-zoom-modal")) {
+        const modal = document.getElementById("stamp-zoom-modal");
+        if (modal) modal.style.display = "none";
+    }
 }
 
 function nextAlbumPage() {

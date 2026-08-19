@@ -355,6 +355,23 @@
             <img class="stamp-opt" src="st-skull.png" onclick="chooseSealStamp('st-skull.png', this)">
             <img class="stamp-opt" src="st-smoke.png" onclick="chooseSealStamp('st-smoke.png', this)">
             <img class="stamp-opt" src="st-vaticana.png" onclick="chooseSealStamp('st-vaticana.png', this)">
+            <!-- 🌟 แสตมป์ชุดใหม่ 7 ลาย (upd19/08/26)-->
+            <img class="stamp-opt" src="st-francaise.png" onclick="chooseSealStamp('st-francaise.png', this)">
+            <img class="stamp-opt" src="st-Czechoslovakia.png" onclick="chooseSealStamp('st-Czechoslovakia.png', this)">
+            <img class="stamp-opt" src="st-dragon.png" onclick="chooseSealStamp('st-dragon.png', this)">
+            <img class="stamp-opt" src="st-leke.png" onclick="chooseSealStamp('st-leke.png', this)">
+            <img class="stamp-opt" src="st-first.dino.ch.png" onclick="chooseSealStamp('st-first.dino.ch.png', this)">
+            <img class="stamp-opt" src="st-sheep.png" onclick="chooseSealStamp('st-sheep.png', this)">
+            <img class="stamp-opt" src="st-deutsche.png" onclick="chooseSealStamp('st-deutsche.png', this)">
+            <!-- 🌟 แสตมป์ชุดใหม่ 7 ลาย (upd20/08/26) -->
+            <img class="stamp-opt" src="st-junji1.png" onclick="chooseSealStamp('st-junji1.png', this)">
+            <img class="stamp-opt" src="st-junji2.png" onclick="chooseSealStamp('st-junji2.png', this)">
+            <img class="stamp-opt" src="st-vietnam.png" onclick="chooseSealStamp('st-vietnam.png', this)">
+            <img class="stamp-opt" src="st-clown.png" onclick="chooseSealStamp('st-clown.png', this)">
+            <img class="stamp-opt" src="st-londres.png" onclick="chooseSealStamp('st-londres.png', this)">
+            <img class="stamp-opt" src="st-monaco.png" onclick="chooseSealStamp('st-monaco.png', this)">
+            <img class="stamp-opt" src="st-nine.hearts.png" onclick="chooseSealStamp('st-nine.hearts.png', this)">
+            <img class="stamp-opt" src="st-la.poste.png" onclick="chooseSealStamp('st-la.poste.png', this)">
         </div>
 
         <!-- 🌟 ปุ่มกดยืนยันหลังจากเลือกแสตมป์เสร็จแล้ว -->
@@ -365,7 +382,7 @@
         <div id="stamp-album-modal" class="modal-overlay" style="display: none;">
             <div class="album-popup-wrapper">
                 <button class="album-close-btn" onclick="closeStampAlbum()">✕</button>
-                <div class="album-title-tag">✨ Vintage Stamp Album ✨</div>
+                <div class="album-title-tag">✨ Vintage Stamp Album </div>
 
                 <div class="mini-book-container">
                     <!-- สันสมุดตรงกลาง -->
@@ -390,6 +407,25 @@
                 </div>
             </div>
         </div>
+
+<!-- 🔍 Modal ซูมดูแสตมป์ภาพใหญ่ + รายละเอียดวันที่ -->
+<div id="stamp-zoom-modal" class="modal-overlay" style="display: none;" onclick="closeStampZoom(event)">
+    <div class="stamp-zoom-card">
+        <button class="zoom-close-btn" onclick="closeStampZoom(null, true)">✕</button>
+        
+        <div class="zoom-img-frame">
+            <img id="zoom-stamp-img" src="" alt="Stamp Preview">
+        </div>
+        
+        <div class="zoom-stamp-details">
+            <h3 id="zoom-stamp-name">Stamp Name</h3>
+            <div class="zoom-date-badge">
+                📅 Added: <span id="zoom-stamp-date">19 Aug 2026</span>
+            </div>
+            <p id="zoom-stamp-desc" class="zoom-desc">✨ A lovely vintage piece added to your collection.</p>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
